@@ -1,0 +1,46 @@
+{
+  "name": "vue-live2d",
+  "version": "1.0.0",
+  "author": "evgo <evgo2017@qq.com>",
+  "description": "vue看板娘组件",
+  "license": "MIT",
+  "main": "dist/vue-live2d.common.js",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name vue-live2d ./src/index.js"
+  },
+  "homepage": "https://evgo2017.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evgo2017/vue-live2d.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evgo2017/vue-live2d/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "live2d",
+    "vue-live2d"
+  ],
+  "private": false,
+  "dependencies": {
+    "axios": "^0.18.1",
+    "core-js": "^3.6.4",
+    "font-awesome": "^4.7.0",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.2.0",
+    "@vue/cli-service": "^4.2.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
