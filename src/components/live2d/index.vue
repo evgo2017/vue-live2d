@@ -223,7 +223,7 @@ export default {
     width: 250px;
     height: 250px;
     bottom: 0;
-    right: 10px;
+    right: 0;
     transition: transform .3s ease-in-out;
     transform: translateY(3px);
   }
