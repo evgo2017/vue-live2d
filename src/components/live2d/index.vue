@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import './live2d.min.js'
 
 // TODO: 各配置独立文件
@@ -133,7 +134,7 @@ export default {
     },
     loadOtherModel () {
       const url = `${this.apiPath}/switch/?id=${this.modelId}`
-      this.$axios.get(url).then((res) => {
+      axios.get(url).then((res) => {
         let { id, message } = res.data.model
         if (id === 5) id = 7
         this.modelId = id
@@ -146,7 +147,7 @@ export default {
     },
     loadOtherTextures () {
       const url = `${this.apiPath}/rand_textures/?id=${this.modelId}-${this.modelTexturesId}`
-      this.$axios.get(url).then((res) => {
+      axios.get(url).then((res) => {
         const { id } = res.data.textures
         this.modelTexturesId = id
         this.loadModel()
@@ -199,7 +200,7 @@ export default {
     },
     showHitokoto () {
       const url = 'https://v1.hitokoto.cn'
-      this.$axios.get(url).then((res) => {
+      axios.get(url).then((res) => {
         const { hitokoto, id, creator } = res.data
         this.showMessage(`${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${res.data.from} 》`)
       }).catch(function (err) {
