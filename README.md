@@ -22,9 +22,6 @@ npm install vue-live2d
 // 组件中引入：
 import live2d from 'vue-live2d'
 import 'vue-live2d/dist/vue-live2d.css'
-
-// 目前可配置项
-<live2d :apiPath="" :zIndex="" :model="" :homePage="">
 ```
 ### 3. 本地预览
 
@@ -41,24 +38,31 @@ $ npm run serve
 
 核心是 `src/components/live2d` 下的文件，可对其中的 `index.vue` 进行修改重新打包，生成的文件在 `dist` 文件夹内。
 
+> 目前在更新内容，不确保使用当前源码打包的内容可正常使用，但不影响其他内容。
+
 ```
 $ npm run build-bundle
 ```
 
 ## 二、配置参数
 
-| 配置项   | 类型   | 含义                           | 默认                          |
-| -------- | ------ | ------------------------------ | ----------------------------- |
-| apiPath  | String | 更换模型的请求地址             | https://live2d.fghrsh.net/api |
-| zIndex   | Number | z-index 属性                   | 1                             |
-| model    | Array  | 默认显示的模型，[编码，衣服号] | () => [1, 53]                 |
-| homePage | String | 可打开某页面的地址             | https://github.com/evgo2017   |
+| 配置项   | 含义                           | 类型   | 默认                                   |
+| -------- | ------------------------------ | ------ | -------------------------------------- |
+| width    | 模型宽度                       | Number | 255                                    |
+| height   | 模型高度                       | Number | 255                                    |
+| apiPath  | 更换模型的请求地址             | String | https://live2d.fghrsh.net/api          |
+| model    | 默认显示的模型，[编码，衣服号] | Array  | [1, 53]                                |
+| tips     | 在触发某些事件时模型说出的话   | Object | 查看 /packages/src/tips.js             |
+| position | 模型位置（左或者右）           | String | left（其他字符串均表示 right）         |
+| homePage | 可打开某页面的地址             | String | https://github.com/evgo2017/vue-live2d |
 
 ## 三、注意
 
-现版本是参考资料中的项目进行修改的，改动较大，核心为 `live2d.min.js` ，因为其中有些方法直接注册至 `window`，所以之后计划使用 `live2d` 官网的 `SDK` 进行配置。
+现版本是参考资料中的项目进行修改的，改动较大，核心为 `live2d.min.js` ，暂不知作者是谁。
 
-##　四、参考资料
+也有查看 live2d 官网的 Web SDK （4-r.1），综合考虑后还是采用目前的 js。
+
+## 四、参考资料
 
 [1] https://github.com/fghrsh/live2d_demo
 
