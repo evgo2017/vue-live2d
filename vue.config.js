@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/',
+  publicPath: '/vue-live2d/page',
   pages: {
     index: {
       entry: 'example/main.js',
