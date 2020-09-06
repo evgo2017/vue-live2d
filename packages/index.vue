@@ -1,16 +1,16 @@
 <template>
   <div
-    id="live2d"
-    ref="live2d"
+    class="vue-live2d"
+    ref="vue-live2d"
     :style="{ width: width + 'px', height: height + 'px' }"
     @mouseover="toolShow = true"
     @mouseout="toolShow = false">
     <div v-show="mainShow">
-      <div id="live2d-tip" v-html="tipText" v-show="tipShow"></div>
-      <canvas id="live2d-main" :width="width" :height="height"></canvas>
+      <div class="vue-live2d-tip" v-html="tipText" v-show="tipShow"></div>
+      <canvas :id="live2dMainId" ref="vue-live2d-main" :width="width" :height="height" class="vue-live2d-main"></canvas>
       <div
-        id="live2d-tool"
-        ref="live2d-tool"
+        class="vue-live2d-tool"
+        ref="vue-live2d-tool"
         v-show="toolShow">
         <span
           class="fa fa-lg"
@@ -20,7 +20,7 @@
           @click="tool.click"/>
       </div>
     </div>
-    <div id="live2d-toggle" ref="live2d-toggle" v-show="!mainShow" @click="mainShow = true">
+    <div class="vue-live2d-toggle" ref="vue-live2d-toggle" v-show="!mainShow" @click="mainShow = true">
       <span>看板娘</span>
     </div>
   </div>
@@ -30,14 +30,18 @@
 import axios from 'axios'
 import './lib/live2d.min.js'
 import 'font-awesome/css/font-awesome.min.css'
-import './src/live2d.css'
+
 import tips from './src/tips'
 
 export default {
   name: 'live2d',
   props: {
-    position: {
+    direction: {
       default: 'right',
+      type: String
+    },
+    customId: {
+      default: '',
       type: String
     },
     apiPath: {
@@ -98,38 +102,48 @@ export default {
   mounted () {
     this.modelId = this.model[0]
     this.modelTexturesId = this.model[1]
-    this.setPosition()
+    if (!tips) this.tips = tips
     this.loadModel()
+    this.setDirection()
     this.$nextTick(function () {
       this.loadEvent()
     })
   },
   computed: {
-    positionName () {
-      return this.position === 'right' ? 'right' : 'left'
+    live2dMainId () {
+      const defaultId = 'vue-live2d-main'
+      const customId = this.customId
+      if (!customId) return defaultId
+      return customId
     }
   },
   watch: {
     mainShow () {
-      const containers = ["live2d"]
+      const containers = ['vue-live2d']
       const refs = this.$refs
       containers.forEach(containerName => {
-        refs[containerName].classList.toggle(`${containerName}-on-${this.positionName}`)
+        refs[containerName].classList.toggle(`${containerName}-on-${this.direction}`)
       })
+    },
+    direction () {
+      this.setDirection()
     }
   },
   methods: {
-    setPosition () {
-      const containers = ["live2d", "live2d-tool", "live2d-toggle"]
+    setDirection () {
+      const containers = ['vue-live2d', 'vue-live2d-tool', 'vue-live2d-toggle']
       const refs = this.$refs
+      const addClassPostFix = this.direction
+      const removeClassPostFix = this.direction === 'left' ? 'right' : 'left'
       containers.forEach(containerName => {
-        refs[containerName].classList.add(`${containerName}-on-${this.positionName}`)
+        refs[containerName].classList.remove(`${containerName}-on-${removeClassPostFix}`)
+        refs[containerName].classList.add(`${containerName}-on-${addClassPostFix}`)
       })
     },
     loadModel () {
-      const { apiPath, modelId, modelTexturesId } = this
+      const { apiPath, modelId, modelTexturesId, live2dMainId } = this
       const url = `${apiPath}/get/?id=${modelId}-${modelTexturesId}`
-      window.loadlive2d('live2d-main', url)
+      window.loadlive2d(live2dMainId, url)
       console.log(`Live2D 模型 ${modelId}-${modelTexturesId} 加载完成`)
     },
     loadRandModel () {
@@ -150,7 +164,7 @@ export default {
         this.modelTexturesId = id
         this.loadModel()
         if (!isAfterRandModel) {
-          this.showMessage("我的新衣服好看嘛？", 4000)
+          this.showMessage('我的新衣服好看嘛？', 4000)
         }
       }).catch(function (err) {
         console.log(err)
@@ -187,7 +201,6 @@ export default {
       open(this.homePage)
     },
     close () {
-      this.showMessage('下次见~', 2000)
       this.mainShow = false
     },
     loadEvent () {
@@ -209,5 +222,236 @@ export default {
 </script>
 
 <style scoped>
-  
+/* live2d */
+.vue-live2d {
+  transform: translateY(0);
+  transition: transform .3s ease-in-out;
+}
+.vue-live2d-on-left:hover {
+  transform: translateX(21px);
+}
+.vue-live2d-on-right:hover {
+  transform: translateX(-21px);
+}
+/* live2d-tip */
+.vue-live2d-tip {
+  position: absolute;
+  width: 100%;
+  min-height: 3rem;
+  line-height: 1.5rem;
+  margin-top: -20px;
+  padding: 5px 10px;
+  font-size: .9rem;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  border: 1px solid rgba(224, 186, 140, 0.62);
+  border-radius: 12px;
+  background-color: rgba(236, 217, 188, 0.5);
+  box-shadow: 0 3px 15px 2px rgba(191, 158, 118, 0.2);
+  animation: shake 50s ease-in-out 5s infinite;
+}
+/* live2d-main */
+.vue-live2d-main {
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -o-grab;
+  cursor: -ms-grab;
+}
+/* live2d-tool */
+.vue-live2d-tool {
+  position: absolute;
+  width: 30px;
+  bottom: 10px;
+  color: #5b6c7d;
+  text-align: center;
+  cursor: pointer;
+}
+.vue-live2d-tool-on-left {
+  left: -18px;
+}
+.vue-live2d-tool-on-right {
+  right: -18px;
+}
+.vue-live2d-tool span {
+  display: block;
+  line-height: 30px;
+}
+.vue-live2d-tool span:hover {
+  color: #0684bd;
+}
+/* live2d-toggle */
+.vue-live2d-toggle {
+  width: 1.5rem;
+  position: absolute;
+  bottom: 1rem;
+  padding: .3rem 0;
+  writing-mode: vertical-lr;
+  color: #fff;
+  background-color: #fa0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.vue-live2d-toggle-on-left {
+  left: 0;
+  border-radius: 0 .5rem .5rem 0;
+}
+.vue-live2d-toggle-on-right {
+  right: 0;
+  border-radius: .5rem 0 0 .5rem;
+}
+.vue-live2d-toggle:hover {
+  width: 1.7rem;
+}
+@keyframes shake {
+  2% {
+    transform: translate(0.5px, -1.5px) rotate(-0.5deg);
+  }
+  4% {
+    transform: translate(0.5px, 1.5px) rotate(1.5deg);
+  }
+  6% {
+    transform: translate(1.5px, 1.5px) rotate(1.5deg);
+  }
+  8% {
+    transform: translate(2.5px, 1.5px) rotate(0.5deg);
+  }
+  10% {
+    transform: translate(0.5px, 2.5px) rotate(0.5deg);
+  }
+  12% {
+    transform: translate(1.5px, 1.5px) rotate(0.5deg);
+  }
+  14% {
+    transform: translate(0.5px, 0.5px) rotate(0.5deg);
+  }
+  16% {
+    transform: translate(-1.5px, -0.5px) rotate(1.5deg);
+  }
+  18% {
+    transform: translate(0.5px, 0.5px) rotate(1.5deg);
+  }
+  20% {
+    transform: translate(2.5px, 2.5px) rotate(1.5deg);
+  }
+  22% {
+    transform: translate(0.5px, -1.5px) rotate(1.5deg);
+  }
+  24% {
+    transform: translate(-1.5px, 1.5px) rotate(-0.5deg);
+  }
+  26% {
+    transform: translate(1.5px, 0.5px) rotate(1.5deg);
+  }
+  28% {
+    transform: translate(-0.5px, -0.5px) rotate(-0.5deg);
+  }
+  30% {
+    transform: translate(1.5px, -0.5px) rotate(-0.5deg);
+  }
+  32% {
+    transform: translate(2.5px, -1.5px) rotate(1.5deg);
+  }
+  34% {
+    transform: translate(2.5px, 2.5px) rotate(-0.5deg);
+  }
+  36% {
+    transform: translate(0.5px, -1.5px) rotate(0.5deg);
+  }
+  38% {
+    transform: translate(2.5px, -0.5px) rotate(-0.5deg);
+  }
+  40% {
+    transform: translate(-0.5px, 2.5px) rotate(0.5deg);
+  }
+  42% {
+    transform: translate(-1.5px, 2.5px) rotate(0.5deg);
+  }
+  44% {
+    transform: translate(-1.5px, 1.5px) rotate(0.5deg);
+  }
+  46% {
+    transform: translate(1.5px, -0.5px) rotate(-0.5deg);
+  }
+  48% {
+    transform: translate(2.5px, -0.5px) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(-1.5px, 1.5px) rotate(0.5deg);
+  }
+  52% {
+    transform: translate(-0.5px, 1.5px) rotate(0.5deg);
+  }
+  54% {
+    transform: translate(-1.5px, 1.5px) rotate(0.5deg);
+  }
+  56% {
+    transform: translate(0.5px, 2.5px) rotate(1.5deg);
+  }
+  58% {
+    transform: translate(2.5px, 2.5px) rotate(0.5deg);
+  }
+  60% {
+    transform: translate(2.5px, -1.5px) rotate(1.5deg);
+  }
+  62% {
+    transform: translate(-1.5px, 0.5px) rotate(1.5deg);
+  }
+  64% {
+    transform: translate(-1.5px, 1.5px) rotate(1.5deg);
+  }
+  66% {
+    transform: translate(0.5px, 2.5px) rotate(1.5deg);
+  }
+  68% {
+    transform: translate(2.5px, -1.5px) rotate(1.5deg);
+  }
+  70% {
+    transform: translate(2.5px, 2.5px) rotate(0.5deg);
+  }
+  72% {
+    transform: translate(-0.5px, -1.5px) rotate(1.5deg);
+  }
+  74% {
+    transform: translate(-1.5px, 2.5px) rotate(1.5deg);
+  }
+  76% {
+    transform: translate(-1.5px, 2.5px) rotate(1.5deg);
+  }
+  78% {
+    transform: translate(-1.5px, 2.5px) rotate(0.5deg);
+  }
+  80% {
+    transform: translate(-1.5px, 0.5px) rotate(-0.5deg);
+  }
+  82% {
+    transform: translate(-1.5px, 0.5px) rotate(-0.5deg);
+  }
+  84% {
+    transform: translate(-0.5px, 0.5px) rotate(1.5deg);
+  }
+  86% {
+    transform: translate(2.5px, 1.5px) rotate(0.5deg);
+  }
+  88% {
+    transform: translate(-1.5px, 0.5px) rotate(1.5deg);
+  }
+  90% {
+    transform: translate(-1.5px, -0.5px) rotate(-0.5deg);
+  }
+  92% {
+    transform: translate(-1.5px, -1.5px) rotate(1.5deg);
+  }
+  94% {
+    transform: translate(0.5px, 0.5px) rotate(-0.5deg);
+  }
+  96% {
+    transform: translate(2.5px, -0.5px) rotate(-0.5deg);
+  }
+  98% {
+    transform: translate(-1.5px, -1.5px) rotate(-0.5deg);
+  }
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
 </style>

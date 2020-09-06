@@ -4,10 +4,11 @@
   "author": "evgo <evgo2017@qq.com>",
   "description": "vue看板娘组件",
   "license": "MIT",
-  "main": "dist/vue-live2d.common.js",
+  "main": "dist/vue-live2d.umn.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint --fix",
+    "build": "vue-cli-service build --dest page",
     "build-bundle": "vue-cli-service build --target lib --name vue-live2d ./packages/index.js"
   },
   "homepage": "https://evgo2017.com",
@@ -29,13 +30,37 @@
   "private": false,
   "dependencies": {
     "axios": "^0.20.0",
-    "font-awesome": "^4.7.0"
+    "core-js": "^3.6.5",
+    "font-awesome": "^4.7.0",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.2.0",
-    "@vue/cli-service": "^4.2.0",
-    "vue": "^2.6.11",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
   },
   "browserslist": [
     "> 1%",
