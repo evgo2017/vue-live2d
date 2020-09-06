@@ -2,12 +2,12 @@
   <div
     class="vue-live2d"
     ref="vue-live2d"
-    :style="{ width: width + 'px', height: height + 'px' }"
+    :style="{ width: live2dWidth + 'px', height: live2dHeight + 'px' }"
     @mouseover="toolShow = true"
     @mouseout="toolShow = false">
     <div v-show="mainShow">
       <div class="vue-live2d-tip" v-html="tipText" v-show="tipShow"></div>
-      <canvas :id="live2dMainId" ref="vue-live2d-main" :width="width" :height="height" class="vue-live2d-main"></canvas>
+      <canvas :id="live2dMainId" ref="vue-live2d-main" :width="live2dWidth" :height="live2dHeight" class="vue-live2d-main"></canvas>
       <div
         class="vue-live2d-tool"
         ref="vue-live2d-tool"
@@ -61,10 +61,14 @@ export default {
       type: Object
     },
     width: {
-      default: 255,
+      default: 0,
       type: Number
     },
     height: {
+      default: 0,
+      type: Number
+    },
+    size: {
       default: 255,
       type: Number
     }
@@ -102,7 +106,6 @@ export default {
   mounted () {
     this.modelId = this.model[0]
     this.modelTexturesId = this.model[1]
-    if (!tips) this.tips = tips
     this.loadModel()
     this.setDirection()
     this.$nextTick(function () {
@@ -115,6 +118,12 @@ export default {
       const customId = this.customId
       if (!customId) return defaultId
       return customId
+    },
+    live2dWidth () {
+      return this.width ? this.width : this.size
+    },
+    live2dHeight () {
+      return this.height ? this.height : this.size
     }
   },
   watch: {
@@ -127,9 +136,25 @@ export default {
     },
     direction () {
       this.setDirection()
+    },
+    width () {
+      this.changeLive2dSize()
+    },
+    height () {
+      this.changeLive2dSize()
+    },
+    size () {
+      if (this.width || this.height) return
+      this.changeLive2dSize()
     }
   },
   methods: {
+    changeLive2dSize () {
+      const { live2dMainId, live2dWidth: width, live2dHeight: height } = this
+      // 不知还有调整宽高的好方法没？
+      document.querySelector(`#${live2dMainId}`).outerHTML = `<canvas id=${live2dMainId} width="${width}" height="${height}" class="vue-live2d-main"></canvas>`
+      this.loadModel()
+    },
     setDirection () {
       const containers = ['vue-live2d', 'vue-live2d-tool', 'vue-live2d-toggle']
       const refs = this.$refs

@@ -1,6 +1,7 @@
 <template>
   <!-- 使用示例 -->
   <div>
+    <div style="margin: 2px 0">注意：如果有时候按钮不能点击，是因为模型 zIndex 挡住了按钮。</div>
     <div>
       <span>position style：</span>
       <button @click="style = 'position: fixed; top: calc(50% - 250px); left: calc(50% - 200px)'">呆在中间</button>
@@ -17,8 +18,8 @@
     </div>
     <div>
       <span>size：</span>
-      <button @click="width = width - 100; height = height - 100">减小</button>
-      <button @click="width = width + 100; height = height + 100">增大</button>
+      <button @click="size = size - 100; width = width - 100; height = height - 100;">减小</button>
+      <button @click="size = size + 100; width = width + 100; height = height + 100;">增大</button>
     </div>
     <!-- 可尝试一个页面上多个模型： -->
     <!-- <live2d
@@ -29,11 +30,10 @@
       customId="vue-live2d-mian-2"
     ></live2d> -->
     <live2d
+      :style="style"
       :model="[1, 53]"
       :direction="direction"
-      :style="style"
-      :width="width"
-      :height="height"
+      :size="size"
     ></live2d>
   </div>
 </template>
@@ -54,9 +54,10 @@ export default {
   data () {
     return {
       direction: 'right',
-      style: 'position: fixed; top: calc(50% - 250px); left: calc(50% - 200px)',
-      width: 400,
-      height: 400,
+      style: '',
+      width: 500,
+      height: 500,
+      size: 350,
       tips: {
         mouseover: [{
           selector: '.vue-live2d',
@@ -74,7 +75,7 @@ export default {
 
 <style>
 body {
-  margin: 0;
+  margin: 20px;
   padding: 0;
 }
 </style>

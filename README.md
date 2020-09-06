@@ -40,16 +40,6 @@ $ npm run serve
 
 核心是 packages 文件夹下的文件。
 
-#### build
-
-```
-$ npm run build
-```
-
- 生成文件在 page 文件夹内，是静态的，需要挂载在服务器上显示，为本地预览的页面。
-
-#### build-bundle
-
 ```
 $ npm run build-bundle
 ```
@@ -62,8 +52,9 @@ $ npm run build-bundle
 
 | 配置项    | 含义                           | 类型   | 默认                                   |
 | --------- | ------------------------------ | ------ | -------------------------------------- |
-| width     | 模型宽度                       | Number | 255                                    |
-| height    | 模型高度                       | Number | 255                                    |
+| size      | 模型宽度和高度                 | Number | 255                                    |
+| width     | 模型宽度                       | Number | 0                                      |
+| height    | 模型高度                       | Number | 0                                      |
 | apiPath   | 更换模型的请求地址             | String | https://live2d.fghrsh.net/api          |
 | model     | 默认显示的模型，[编码，衣服号] | Array  | [1, 53]                                |
 | direction | 模型方位（左或者右）           | String | left（其他字符串均表示 right）         |
@@ -73,9 +64,13 @@ $ npm run build-bundle
 
 ### 2. 部分具体说明
 
-#### width height
+#### width height size
 
-这两个参数来设置模型的宽高，只初始化一次，若改变参数，div 尺寸会变化，但 canvas 内显示的模型不会。
+这三个参数放在一起说，它们都是用来调整模型宽高的。width 只调整宽度，height 只调整高度，size 同时调整宽高为同一值。
+
+优先级：width = height > size。可以说 width 和 height 参数会覆盖 size 参数设置的对应值。
+
+设置 size 是为了减少重新加载模型的次数。
 
 #### apiPath
 
