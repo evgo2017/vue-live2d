@@ -12,7 +12,13 @@ vue 看板娘
 
 ### 1. 在线浏览
 
-查看动态效果：https://evgo2017.com/repos/live2d
+#### 个人网站应用
+
+https://evgo2017.com/repos/live2d，访问速度快
+
+#### 使用示例
+
+https://evgo2017.github.io/vue-live2d/page/index.html，部署在 github 上，访问速度不定，但示例较完善，方便调整参数查看效果，同本地浏览页面效果。
 
 ### 2. 项目引入
 
