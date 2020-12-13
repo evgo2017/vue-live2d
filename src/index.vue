@@ -31,10 +31,10 @@ import axios from 'axios'
 import './lib/live2d.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 
-import tips from './src/tips'
+import tips from './options/tips'
 
 export default {
-  name: 'live2d',
+  name: 'vue-live2d',
   props: {
     direction: {
       default: 'right',

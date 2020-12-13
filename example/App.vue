@@ -44,7 +44,7 @@
  * import live2d from 'vue-live2d'
  * import 'vue-live2d/dist/vue-live2d.css'
  */
-import live2d from '../packages/index.vue'
+import live2d from '../src/index.vue'
 
 export default {
   name: 'App',

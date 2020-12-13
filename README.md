@@ -14,11 +14,11 @@ vue 看板娘
 
 #### 个人网站应用
 
-https://evgo2017.com/repos/live2d，访问速度快
+https://evgo2017.com/repos/live2d
 
 #### 使用示例
 
-https://evgo2017.github.io/vue-live2d/page/index.html，部署在 github 上，访问速度不定，但示例较完善，方便调整参数查看效果，同本地浏览页面效果。
+https://evgo2017.github.io/vue-live2d/page/index.html：部署在 github 上，访问速度不定，但示例较完善，方便调整参数查看效果，同本地浏览页面效果。
 
 ### 2. 项目引入
 
@@ -26,10 +26,7 @@ https://evgo2017.github.io/vue-live2d/page/index.html，部署在 github 上，�
 npm install vue-live2d
 
 // 在组件中引入
-import live2d from 'vue-live2d'
-import 'vue-live2d/dist/vue-live2d.css'
-
-// 支持 Vue.use(live2d)
+import vueLive2d from 'vue-live2d'
 ```
 ### 3. 本地浏览
 
@@ -41,16 +38,6 @@ $ cd ./vue-live2d
 $ npm install
 $ npm run serve
 ```
-
-### 4. 重新打包
-
-核心是 packages 文件夹下的文件。
-
-```
-$ npm run build-bundle
-```
-
-生成的文件在 dist 文件夹内，是 npm 安装此插件后在 `node_modules/vue-live2d` 内的文件。
 
 ## 二、配置参数
 
@@ -64,7 +51,7 @@ $ npm run build-bundle
 | apiPath   | 更换模型的请求地址             | String | https://live2d.fghrsh.net/api          |
 | model     | 默认显示的模型，[编码，衣服号] | Array  | [1, 53]                                |
 | direction | 模型方位（左或者右）           | String | left（其他字符串均表示 right）         |
-| tips      | 在触发某些事件时模型说出的话   | Object | 格式查看 /packages/src/tips.js         |
+| tips      | 在触发某些事件时模型说出的话   | Object | 格式查看 /src/src/tips.js         |
 | homePage  | 可打开某页面的地址             | String | https://github.com/evgo2017/vue-live2d |
 | customId  | 自定义 id                      | String | vue-live2d-main                        |
 
