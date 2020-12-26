@@ -6,7 +6,7 @@ vue 看板娘
 
 ![logo](https://github.com/evgo2017/vue-live2d/blob/master/public/logo.png)
 
-可直接在 vue 项目中直接引用此包，即可应用看板娘，目前包含简单的功能配置。
+可直接在 vue 项目中直接引用此包，即可应用看板娘，目前包含不少功能配置。
 
 ## 一、使用
 
@@ -20,7 +20,7 @@ https://evgo2017.com/repo/vue-live2d
 
 #### 使用示例
 
-部署在 github 上，访问速度不定，但示例较完善，方便调整参数查看效果，同本地浏览页面效果。
+部署在 github 上:
 
 https://evgo2017.github.io/vue-live2d/page/index.html
 
@@ -31,6 +31,8 @@ npm install vue-live2d
 
 // 在组件中引入
 import vueLive2d from 'vue-live2d'
+
+// 组件中的使用方法具体参考 `example/App.vue` 文件
 ```
 ### 3. 本地浏览
 
@@ -45,7 +47,7 @@ $ npm run serve
 
 ## 二、配置参数
 
-### 1. 简单描述
+### 1. 参数说明
 
 | 配置项    | 含义                           | 类型   | 默认                                   |
 | --------- | ------------------------------ | ------ | -------------------------------------- |
@@ -105,7 +107,7 @@ $ npm run serve
 
 现版本是参考资料中的项目进行修改的，改动较大，核心为 `live2d.min.js` ，暂不知作者是谁。
 
-也有查看 live2d 官网的 [Web SDK](https://www.live2d.com/download/cubism-sdk/download-web/) （4-r.1），综合考虑后还是采用目前的 js。
+也有查看 live2d 官网的 [Web SDK](https://www.live2d.com/download/cubism-sdk/download-web/) （4-r.1），综合考虑后目前采用此 js。
 
 ## 四、参考资料
 
