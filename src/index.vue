@@ -120,7 +120,7 @@ export default {
       return customId
     },
     live2dWidth () {
-      return this.width ? this.width : this.size
+      this.mainShow ? this.width ? this.width : this.size : 0
     },
     live2dHeight () {
       return this.height ? this.height : this.size
