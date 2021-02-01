@@ -40,7 +40,7 @@
 
 <script>
 /*
- * 项目中引用包时，将 import 内容替换，同时引入 css 文件：
+ * 项目中引用包时，将 import 内容替换
  * import live2d from 'vue-live2d'
  */
 import live2d from '../src/index.vue'
