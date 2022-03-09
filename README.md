@@ -50,6 +50,7 @@ npm run serve
     
 ### 四、模型库
 fghrsh-live2d: https://github.com/fghrsh/live2d_api
+
 Raxcl-live2d: https://github.com/Raxcl/vue-live2d-models
 
 ### 五、参数说明([参考文档](https://github.com/evgo2017/vue-live2d))
