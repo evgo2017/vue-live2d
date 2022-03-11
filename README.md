@@ -11,9 +11,16 @@ vue 看板娘
 
 新增3种一言接口（包含古诗词）
 
-新增根据模型调整高度（弃用逻辑实力不足）
+新增根据模型调整高度（弃用逻辑实力不足）,替代方案为引入四个按钮，可自定义调整高度
+
 
 ## 一.项目中引用
+参考demo: [https://raxcl.cn](https://raxcl.cn/home)
+
+参考代码库： [https://github.com/Raxcl/RBlog](https://github.com/Raxcl/RBlog)
+
+代码路径：src/component/live2d
+
 ### 1. 将live2d文件夹放入自己项目的component文件夹下
 
 ### 2. 在view文件夹下的index.vue(需根据项目具体情况做出调整)中引入live2d
