@@ -35,6 +35,7 @@ import Live2d from '@/components/live2d/live2d'
 ### 3. 安装诗词一言插件
 ```
 npm install jinrishici(应该是这个命令，具体项目启动后缺少插件也会提示安装)
+npm install --save font-awesome （安装图标库）
 ```
 
 ## 二. live2d看板娘维护
