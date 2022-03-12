@@ -1,8 +1,9 @@
 <template>
-  <div
+  <div>
+    <div
     class="vue-live2d"
     ref="vue-live2d"
-    :style="{ width: live2dWidth + 'px', height: live2dHeight + 'px' }"
+    :style="{ width: live2dWidth + 'px', height: live2dHeight + 'px' ,zIndex: 3000}"
     @mouseover="toolShow = true"
     @mouseout="toolShow = false"
   >
@@ -30,11 +31,13 @@
         />
       </div>
     </div>
-    <div
+  </div>
+  <div
       class="vue-live2d-toggle"
       ref="vue-live2d-toggle"
       v-show="!mainShow"
       @click="mainShow = true"
+      style="zIndex: 3000"
     >
       <span>看板娘</span>
     </div>
@@ -516,7 +519,7 @@ export default {
 /* live2d-toggle */
 .vue-live2d-toggle {
   width: 1.5rem;
-  position: absolute;
+  position: fixed;
   bottom: 1rem;
   padding: 0.3rem 0;
   writing-mode: vertical-lr;
