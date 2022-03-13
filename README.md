@@ -1,4 +1,4 @@
-# vue-live2d
+# 由vue-live2d扩容后的vue-live2d
 
 [![version](https://img.shields.io/npm/v/vue-live2d)](https://npm.js) ![license](https://img.shields.io/github/license/evgo2017/vue-live2d) [![downloads](https://img.shields.io/npm/dt/vue-live2d)](<https://www.npmjs.com/package/vue-live2d> ) [![fork](https://img.shields.io/github/forks/evgo2017/vue-live2d?style=social)](https://github.com/evgo2017/vue-live2d)
 
@@ -6,46 +6,62 @@ vue 看板娘
 
 ![logo](https://github.com/evgo2017/vue-live2d/blob/master/public/logo.png)
 
-可直接在 vue 项目中直接引用此包，即可应用看板娘，目前包含不少功能配置。
+### 新增内容
+新增76种live2d模型
 
-## 一、使用
+新增3种一言接口（包含古诗词）
 
-### 1. 在线浏览
+新增根据模型调整高度（弃用逻辑实力不足）,替代方案为引入四个按钮，可自定义调整高度
 
-#### 个人网站应用
 
-访问速度快：
+## 一.项目中引用
+参考demo: [https://raxcl.cn](https://raxcl.cn/home)
 
-https://evgo2017.com/repo/vue-live2d
+参考代码库： [https://github.com/Raxcl/RBlog](https://github.com/Raxcl/RBlog)
 
-#### 使用示例
+代码路径：src/component/live2d
 
-部署在 github 上:
+### 1. 将live2d文件夹放入自己项目的component文件夹下
 
-https://evgo2017.github.io/vue-live2d/page/index.html
-
-### 2. 项目引入
-
+### 2. 在view文件夹下的index.vue(需根据项目具体情况做出调整)中引入live2d
 ```
-npm install vue-live2d
+<!-- 引入live2d 看板娘 -->
+import Live2d from '@/components/live2d/live2d'
 
-// 在组件中引入
-import vueLive2d from 'vue-live2d'
-
-// 组件中的使用方法具体参考 `example/App.vue` 文件
-```
-### 3. 本地浏览
-
-其中包含源码，`example/App.vue` 为使用示例。
-
-```
-$ git clone https://github.com/evgo2017/vue-live2d.git
-$ cd ./vue-live2d
-$ npm install
-$ npm run serve
+<!-- 使用live2d 看板娘 -->
+<Live2d/>
 ```
 
-## 二、配置参数
+### 3. 安装诗词一言插件
+```
+npm install jinrishici(应该是这个命令，具体项目启动后缺少插件也会提示安装)
+npm install --save font-awesome （安装图标库）
+```
+
+## 二. live2d看板娘维护
+### 1. fork本项目，然后vscode或者其他编译器打开
+
+### 2. 运行
+```
+npm install
+
+npm run serve
+```
+
+### 3. 对src下的index.vue或者其他文件进行修改维护
+
+### 三、目前存在的问题
+#### 1. 部分模型显示不全
+    根据不同模型调整高度的逻辑被弃用（频繁调整高度，导致模型加载不出），具体参见index.vue下的updateModelHeight方法
+    希望大佬能够维护一下，为开源事业做出贡献，感激不尽
+    
+    
+### 四、模型库
+fghrsh-live2d: https://github.com/fghrsh/live2d_api
+
+Raxcl-live2d: https://github.com/Raxcl/vue-live2d-models
+
+### 五、参数说明([参考文档](https://github.com/evgo2017/vue-live2d))
 
 ### 1. 参数说明
 
@@ -103,16 +119,16 @@ $ npm run serve
 
 这部分切换应该是与核心库有关，综合考虑不继续完善此功能。
 
-## 三、核心库
+## 六、参考资料
+[1] evgo2017的live2d模型示例: https://github.com/evgo2017/vue-live2d
 
-现版本是参考资料中的项目进行修改的，改动较大，核心为 `live2d.min.js` ，暂不知作者是谁。
+[2] fghrsh的模型库api: https://github.com/fghrsh/live2d_api
 
-也有查看 live2d 官网的 [Web SDK](https://www.live2d.com/download/cubism-sdk/download-web/) （4-r.1），综合考虑后目前采用此 js。
+[3] iCharlesZ的vscode模型库: https://github.com/iCharlesZ/vscode-live2d-models
 
-## 四、参考资料
+[4] 一言接口 ：'hitokoto.cn', 'jinrishici.com'(古诗词), 'api.fghrsh.net'
 
-[1] https://github.com/fghrsh/live2d_demo
+感谢以上提到的所有创作者！！！如有好的灵感或想法，欢迎fork
 
-[2] https://github.com/stevenjoezhang/live2d-widget
+( ˃ ˄ ˂̥̥ ) 都看到这了，点个 Star 吧 ~
 
-[3] https://github.com/fghrsh/live2d_api

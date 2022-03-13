@@ -16,11 +16,12 @@
       <button @click="direction = 'right'">呆在右边</button>
       <button @click="direction = 'left'">呆在左边</button>
     </div>
-    <div>
+    <!-- 如需启用，需修改index.vue中with方法参数 -->
+    <!-- <div>
       <span>size：</span>
       <button @click="size = size - 100; width = width - 100; height = height - 100;">减小</button>
       <button @click="size = size + 100; width = width + 100; height = height + 100;">增大</button>
-    </div>
+    </div> -->
     <!-- 可尝试一个页面上多个模型： -->
     <!-- <live2d
       :model="[1, 53]"

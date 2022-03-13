@@ -27,6 +27,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "font-awesome": "^4.7.0",
+    "jinrishici": "^1.0.6",
     "vue": "^2.6.11"
   },
   "devDependencies": {

@@ -1,44 +1,26 @@
 <template>
-  <div>
-    <div
+  <div
     class="vue-live2d"
     ref="vue-live2d"
-    :style="{ width: live2dWidth + 'px', height: live2dHeight + 'px' ,zIndex: 3000}"
+    :style="{ width: live2dWidth + 'px', height: live2dHeight + 'px' }"
     @mouseover="toolShow = true"
-    @mouseout="toolShow = false"
-  >
-    <div v-show="mainShow">
+    @mouseout="toolShow = false">
+    <div v-show="mainShow" >
+      <div class="vue-live2d-tip" v-html="tipText" v-show="tipShow"></div>
+      <canvas :id="live2dMainId" ref="vue-live2d-main" :width="live2dWidth" :height="live2dHeight" class="vue-live2d-main"></canvas>
       <div
-        class="vue-live2d-tip"
-        v-html="tipText"
-        v-show="tipShow"
-        :style="{ top: fixtiptop + 'px' }"
-      ></div>
-      <canvas
-        :id="live2dMainId"
-        ref="vue-live2d-main"
-        :width="live2dWidth"
-        :height="live2dHeight"
-        class="vue-live2d-main"
-      ></canvas>
-      <div class="vue-live2d-tool" ref="vue-live2d-tool" v-show="toolShow">
+        class="vue-live2d-tool"
+        ref="vue-live2d-tool"
+        v-show="toolShow">
         <span
           class="fa fa-lg"
           v-for="(tool, index) in tools"
           :key="index"
           :class="tool.name"
-          @click="tool.click"
-        />
+          @click="tool.click"/>
       </div>
     </div>
-  </div>
-  <div
-      class="vue-live2d-toggle"
-      ref="vue-live2d-toggle"
-      v-show="!mainShow"
-      @click="mainShow = true"
-      style="zIndex: 3000"
-    >
+    <div class="vue-live2d-toggle" ref="vue-live2d-toggle" v-show="!mainShow" @click="mainShow = true">
       <span>看板娘</span>
     </div>
   </div>
@@ -93,7 +75,6 @@ export default {
   },
   data () {
     return {
-      tiptop: 20,
       messageTimer: null,
       mainShow: true,
       tipText: '',
@@ -104,49 +85,25 @@ export default {
       myModelId: 0,
       myModelTexturesId: 0,
       isMyModels: true,
-      myModelsAdjust: false,
-      tools: [
-        {
-          name: 'fa-comment',
-          click: this.showHitokoto
-        },
-        {
-          name: 'fa-user-circle',
-          click: this.chooseLoadRandModel
-        },
-        {
-          name: 'fa-street-view',
-          click: this.chooseLoadRandTextures
-        },
-        {
-          name: 'fa-camera-retro',
-          click: this.takePhoto
-        },
-        {
-          name: 'fa-info-circle',
-          click: this.openHomePage
-        },
-        {
-          name: 'fa-times',
-          click: this.close
-        },
-        {
-          name: 'fa-chevron-circle-up',
-          click: this.modeljia
-        },
-        {
-          name: 'fa-chevron-circle-down',
-          click: this.modeljian
-        },
-        {
-          name: 'fa-hand-o-up',
-          click: this.tipjia
-        },
-        {
-          name: 'fa-hand-o-down',
-          click: this.tipjian
-        }
-      ]
+      tools: [{
+        name: 'fa-comment',
+        click: this.showHitokoto
+      }, {
+        name: 'fa-user-circle',
+        click: this.chooseLoadRandModel
+      }, {
+        name: 'fa-street-view',
+        click: this.chooseLoadRandTextures
+      }, {
+        name: 'fa-camera-retro',
+        click: this.takePhoto
+      }, {
+        name: 'fa-info-circle',
+        click: this.openHomePage
+      }, {
+        name: 'fa-times',
+        click: this.close
+      }]
     }
   },
   mounted () {
@@ -166,23 +123,18 @@ export default {
       return customId
     },
     live2dWidth () {
-      return this.width ? this.width : 350
+      return this.width ? this.width : this.size
     },
     live2dHeight () {
       return this.height ? this.height : this.size
     },
-    fixtiptop () {
-      return this.tiptop ? this.tiptop : 20
-    }
   },
   watch: {
     mainShow () {
       const containers = ['vue-live2d']
       const refs = this.$refs
-      containers.forEach((containerName) => {
-        refs[containerName].classList.toggle(
-          `${containerName}-on-${this.direction}`
-        )
+      containers.forEach(containerName => {
+        refs[containerName].classList.toggle(`${containerName}-on-${this.direction}`)
       })
     },
     direction () {
@@ -200,39 +152,19 @@ export default {
     }
   },
   methods: {
-    modeljia () {
-      this.size = this.size + 10
-    },
-    modeljian () {
-      this.size = this.size - 10
-    },
-    tipjia () {
-      this.tiptop = this.tiptop - 10
-    },
-    tipjian () {
-      this.tiptop = this.tiptop + 10
-    },
     changeLive2dSize () {
       const { live2dMainId, live2dWidth: width, live2dHeight: height } = this
       // 不知还有调整宽高的好方法没？
-      document.querySelector(
-        `#${live2dMainId}`
-      ).outerHTML = `<canvas id=${live2dMainId} width="${width}" height="${height}" class="vue-live2d-main"></canvas>`
-      // 更新高度后需重新加载模型，否则会无法显示
-      this.chooseLoadModel()
+      document.querySelector(`#${live2dMainId}`).outerHTML = `<canvas id=${live2dMainId} width="${width}" height="${height}" class="vue-live2d-main"></canvas>`
     },
     setDirection () {
       const containers = ['vue-live2d', 'vue-live2d-tool', 'vue-live2d-toggle']
       const refs = this.$refs
       const addClassPostFix = this.direction
       const removeClassPostFix = this.direction === 'left' ? 'right' : 'left'
-      containers.forEach((containerName) => {
-        refs[containerName].classList.remove(
-          `${containerName}-on-${removeClassPostFix}`
-        )
-        refs[containerName].classList.add(
-          `${containerName}-on-${addClassPostFix}`
-        )
+      containers.forEach(containerName => {
+        refs[containerName].classList.remove(`${containerName}-on-${removeClassPostFix}`)
+        refs[containerName].classList.add(`${containerName}-on-${addClassPostFix}`)
       })
     },
     loadModel () {
@@ -242,99 +174,89 @@ export default {
       console.log(`Live2D 模型 ${modelId}-${modelTexturesId} 加载完成`)
     },
     myLoadModel () {
-      const { myModelId, myModelTexturesId, live2dMainId } = this
-      const { myModel } = myModels
-      // 随机模型id，确保下次模型id不与当前重复
-      console.log('myLoadModel')
+      const {  myModelId, myModelTexturesId, live2dMainId } = this
+      const {myModel} = myModels
+      //随机模型id，确保下次模型id不与当前重复
+      console.log("myLoadModel")
       const url = myModel[myModelId][myModelTexturesId]
-      console.log('url:' + url)
+      console.log("url:"+url)
       window.loadlive2d(live2dMainId, url)
       console.log(`Live2D 模型 ${myModelId}-${myModelTexturesId} 加载完成`)
     },
-    chooseLoadModel () {
-      this.myModelsAdjust ? this.myLoadModel() : this.loadModel()
-    },
-    chooseLoadRandModel () {
+    chooseLoadRandModel(){
       this.isMyModels ? this.myLoadRandModel() : this.loadRandModel()
     },
     loadRandModel () {
       const url = `${this.apiPath}/rand/?id=${this.modelId}`
-      axios
-        .get(url)
-        .then((res) => {
-          const { id, message } = res.data.model
-          this.modelId = id
-          // 调整高度
-          // 高度问题无法解决（调整高度后模型加载不出）
-          // this.updateModelHeight();
-          this.showMessage(message, 4000)
-          this.loadRandTextures(true)
-          // 定义下次按钮触发为新接口
-          this.isMyModels = true
-        })
-        .catch(function (err) {
-          console.log(err)
-        })
+      axios.get(url).then((res) => {
+        const { id, message } = res.data.model
+        this.modelId = id
+        //调整高度
+        //高度问题无法解决（调整高度后模型加载不出）
+        // this.updateModelHeight();
+        this.showMessage(message, 4000)
+        this.loadRandTextures(true)
+        //定义下次按钮触发为新接口
+        this.isMyModels = true;
+      }).catch(function (err) {
+        console.log(err)
+      })
     },
     myLoadRandModel () {
-      const { myModel, myMessage } = myModels
-      // 随机模型id，确保下次模型id不与当前重复
-      while (true) {
-        if (myModel.length <= 1) {
-          break
+      const {myModel,myMessage} = myModels
+      //随机模型id，确保下次模型id不与当前重复
+      while(true){
+        if(myModel.length <= 1){
+          break;
         }
-        const tempMyModelId =
-          Math.floor(Math.random() * myModel.length + 1) - 1
-        if (this.myModelId !== tempMyModelId) {
-          this.myModelId = tempMyModelId
-          break
+        const tempMyModelId = Math.floor(Math.random() * myModel.length + 1)-1;
+        if(this.myModelId != tempMyModelId){
+          this.myModelId = tempMyModelId;
+          break;
         }
       }
-      // 调整高度
+      //调整高度
       // this.updateMyModelHeight();
-
-      // 出场语句
+      
+      //出场语句
       this.showMessage(myMessage[0], 4000)
-      // 挑选随机模型皮肤
+      //挑选随机模型皮肤
       this.myLoadRandTextures(true)
-      // 定义下次按钮触发为原接口
-      this.isMyModels = false
+      //定义下次按钮触发为原接口
+      this.isMyModels = false;
     },
-    chooseLoadRandTextures () {
+    chooseLoadRandTextures(){
       this.isMyModels ? this.loadRandTextures() : this.myLoadRandTextures()
     },
     loadRandTextures (isAfterRandModel = false) {
       const url = `${this.apiPath}/rand_textures/?id=${this.modelId}-${this.modelTexturesId}`
-      axios
-        .get(url)
-        .then((res) => {
-          const { id } = res.data.textures
-          this.modelTexturesId = id
-          this.loadModel()
-          if (!isAfterRandModel) {
-            this.showMessage('我的新衣服好看嘛？', 4000)
-          }
-        })
-        .catch(function (err) {
-          console.log(err)
-        })
+      axios.get(url).then((res) => {
+        const { id } = res.data.textures
+        this.modelTexturesId = id
+        this.loadModel()
+        if (!isAfterRandModel) {
+          this.showMessage('我的新衣服好看嘛？', 4000)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
     },
     myLoadRandTextures (isAfterRandModel = false) {
-      const { myModel } = myModels
-      // 随机皮肤id,确保下次皮肤不与当前重复(只有一个皮肤时不更换皮肤)
-      while (myModel[this.myModelId].length !== 1) {
-        const tempMyModelTexturesId =
-          Math.floor(Math.random() * myModel[this.myModelId].length + 1) - 1
-        if (this.myModelTexturesId !== tempMyModelTexturesId) {
-          this.myModelTexturesId = tempMyModelTexturesId
-          break
+      const {myModel} = myModels
+      //随机皮肤id,确保下次皮肤不与当前重复(只有一个皮肤时不更换皮肤)
+      while(myModel[this.myModelId].length != 1){
+        const tempMyModelTexturesId = Math.floor(Math.random() * myModel[this.myModelId].length + 1)-1;
+        if(this.myModelTexturesId != tempMyModelTexturesId){
+          this.myModelTexturesId = tempMyModelTexturesId;
+          break;
         }
       }
-      // 加载模型
+      //加载模型
       this.myLoadModel()
       if (!isAfterRandModel) {
         this.showMessage('我的新衣服好看嘛？', 4000)
       }
+
     },
     showMessage (msg = '', timeout = 6000) {
       if (this.messageTimer) {
@@ -349,39 +271,35 @@ export default {
         this.messageTimer = null
       }, timeout)
     },
-    updateModelHeight () {
-      const n = this.modelId
-      switch (n) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-          this.height = 450
-          this.height = this.height - 450
-          break
-        // 模型6过高，特殊化
-        case 6:
-          this.height = 0
-          this.height = this.height + 750
-          break
-        default:
-          this.height = 0
-          this.height = this.height + 450
-      }
+    updateModelHeight(){
+        const n = this.modelId
+        switch(n){
+          case 1:case 2:case 3:case 4:case 5:
+            this.height = 450
+            this.height = this.height - 450;
+            break;
+          //模型6过高，特殊化
+          case 6:
+            this.height = 0;
+            this.height = this.height +750;
+            break;
+          default:
+            this.height = 0;
+            this.height = this.height + 450;
+        } 
     },
-    updateMyModelHeight () {
-      // 小模型采用另外的高度,小模型id需手动添加
+    updateMyModelHeight(){
+      //小模型采用另外的高度,小模型id需手动添加
       const n = this.myModelId
-      switch (n) {
+      switch(n){
         case 2:
           this.height = 450
-          this.height = this.height - 450
-          break
+          this.height = this.height - 450;
+          break;
         default:
-          this.height = 0
-          this.height = this.height + 450
-      }
+          this.height = 0;
+          this.height = this.height + 450;
+      } 
     },
     takePhoto () {
       this.showMessage('照好了嘛，留个纪念吖~')
@@ -390,42 +308,38 @@ export default {
     },
     showHitokoto () {
       // n取0-2（2代表default）
-      const n = Math.floor(Math.random() * 3 + 1) - 1
-      switch (n) {
-        case 0:
-          console.log('接口0')
-          axios
-            .get('https://api.fghrsh.net/hitokoto/rand/?encode=jsc&uid=3335')
-            .then((res) => {
-              const { hitokoto } = res.data
-              console.log(res)
-              this.showMessage(`${hitokoto}`)
-            })
-            .catch(function (err) {
-              console.log(err)
-            })
-          break
-        case 1:
-          console.log('接口1')
-          require('jinrishici').load((result) => {
-            console.log(result)
-            const { content } = result.data
-            this.showMessage(`${content}`)
+      const n = Math.floor(Math.random() * 3 + 1)-1;
+      switch(n){
+        case 0 :
+          console.log("接口0");
+          axios.get('https://api.fghrsh.net/hitokoto/rand/?encode=jsc&uid=3335').then((res) => {
+            const {hitokoto} = res.data
+            console.log(res);
+            this.showMessage(`${hitokoto}`)
+          }).catch(function (err) {
+            console.log(err)
           })
-          break
-        default:
-          console.log('接口default')
-          axios
-            .get('https://v1.hitokoto.cn')
-            .then((res) => {
-              const { hitokoto } = res.data
-              console.log(res)
-              this.showMessage(`${hitokoto}`)
-            })
-            .catch(function (err) {
-              console.log(err)
-            })
+          break;
+        case 1 :
+          console.log("接口1");
+          const jinrishici = require('jinrishici');
+          jinrishici.load(result => {
+            console.log(result);
+            const {content} = result.data
+            this.showMessage(`${content}`)
+          });
+          break;
+        default :
+          console.log("接口default");
+          axios.get('https://v1.hitokoto.cn').then((res) => {
+            const { hitokoto } = res.data
+            console.log(res);
+            this.showMessage(`${hitokoto}`)
+          }).catch(function (err) {
+            console.log(err)
+          })
       }
+      
     },
     openHomePage () {
       open(this.homePage)
@@ -437,10 +351,7 @@ export default {
       for (const event in this.tips) {
         for (const obj of this.tips[event]) {
           const { selector, texts } = obj
-          const dom =
-            selector === 'document'
-              ? document
-              : document.querySelector(selector)
+          const dom = selector === 'document' ? document : document.querySelector(selector)
           if (dom == null) continue
 
           dom.addEventListener(event, () => {
@@ -458,7 +369,7 @@ export default {
 /* live2d */
 .vue-live2d {
   transform: translateY(0);
-  transition: transform 0.3s ease-in-out;
+  transition: transform .3s ease-in-out;
 }
 .vue-live2d-on-left:hover {
   transform: translateX(21px);
@@ -478,13 +389,14 @@ export default {
   font-size: 13px;
   word-break: break-all;
   text-overflow: ellipsis;
-  border: 1px solid rgba(255, 137, 255, 0.4);
+	border: 1px solid rgba(255, 137, 255, 0.4);
   border-radius: 12px;
-  background-color: rgba(255, 137, 255, 0.2);
-  box-shadow: 0 3px 15px 2px rgba(255, 137, 255, 0.4);
+	background-color: rgba(255, 137, 255, 0.2);
+	box-shadow: 0 3px 15px 2px rgba(255, 137, 255, 0.4);
   animation: shake 50s ease-in-out 5s infinite;
   font-family: 幼圆;
   color: rgb(56, 106, 197);
+
 }
 
 /* live2d-main */
@@ -519,9 +431,9 @@ export default {
 /* live2d-toggle */
 .vue-live2d-toggle {
   width: 1.5rem;
-  position: fixed;
+  position: absolute;
   bottom: 1rem;
-  padding: 0.3rem 0;
+  padding: .3rem 0;
   writing-mode: vertical-lr;
   color: #fff;
   background-color: #fa0;
@@ -530,11 +442,11 @@ export default {
 }
 .vue-live2d-toggle-on-left {
   left: 0;
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 0 .5rem .5rem 0;
 }
 .vue-live2d-toggle-on-right {
   right: 0;
-  border-radius: 0.5rem 0 0 0.5rem;
+  border-radius: .5rem 0 0 .5rem;
 }
 .vue-live2d-toggle:hover {
   width: 1.7rem;
@@ -687,8 +599,7 @@ export default {
   98% {
     transform: translate(-1.5px, -1.5px) rotate(-0.5deg);
   }
-  0%,
-  100% {
+  0%, 100% {
     transform: translate(0, 0) rotate(0deg);
   }
 }
