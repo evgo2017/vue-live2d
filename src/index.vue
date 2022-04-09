@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import './lib/live2d.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 
@@ -172,27 +171,25 @@ export default {
       console.log(`Live2D 模型 ${modelId}-${modelTexturesId} 加载完成`)
     },
     loadRandModel () {
-      const url = `${this.apiPath}/rand/?id=${this.modelId}`
-      axios.get(url).then((res) => {
-        const { id, message } = res.data.model
-        this.modelId = id
-        this.showMessage(message, 4000)
-        this.loadRandTextures(true)
-      }).catch(function (err) {
-        console.log(err)
+      this.http({
+        url: `${this.apiPath}/rand/?id=${this.modelId}`,
+        success: ({ model: { id, message } }) => {
+          this.modelId = id
+          this.showMessage(message, 4000)
+          this.loadRandTextures(true)
+        }
       })
     },
     loadRandTextures (isAfterRandModel = false) {
-      const url = `${this.apiPath}/rand_textures/?id=${this.modelId}-${this.modelTexturesId}`
-      axios.get(url).then((res) => {
-        const { id } = res.data.textures
-        this.modelTexturesId = id
-        this.loadModel()
-        if (!isAfterRandModel) {
-          this.showMessage('我的新衣服好看嘛？', 4000)
+      this.http({
+        url: `${this.apiPath}/rand_textures/?id=${this.modelId}-${this.modelTexturesId}`,
+        success: ({ textures: { id } }) => {
+          this.modelTexturesId = id
+          this.loadModel()
+          if (!isAfterRandModel) {
+            this.showMessage('我的新衣服好看嘛？', 4000)
+          }
         }
-      }).catch(function (err) {
-        console.log(err)
       })
     },
     showMessage (msg = '', timeout = 6000) {
@@ -214,12 +211,11 @@ export default {
       window.Live2D.captureFrame = true
     },
     showHitokoto () {
-      const url = 'https://v1.hitokoto.cn'
-      axios.get(url).then((res) => {
-        const { hitokoto, id, creator } = res.data
-        this.showMessage(`${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${res.data.from} 》`)
-      }).catch(function (err) {
-        console.log(err)
+      this.http({
+        url: 'https://v1.hitokoto.cn',
+        success: ({ hitokoto, id, creator, from }) => {
+          this.showMessage(`${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${from} 》`)
+        }
       })
     },
     openHomePage () {
@@ -241,6 +237,20 @@ export default {
           })
         }
       }
+    },
+    http ({ url, success }) {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if ((xhr.status >= 200 || xhr.status < 300) || xhr.status === 304) {
+            success && success(JSON.parse(xhr.response))
+          } else {
+            console.error(xhr)
+          }
+        }
+      }
+      xhr.open('GET', url)
+      xhr.send(null)
     }
   }
 }

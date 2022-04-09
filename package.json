@@ -24,7 +24,6 @@
   ],
   "private": false,
   "dependencies": {
-    "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "font-awesome": "^4.7.0",
     "vue": "^2.6.11"
