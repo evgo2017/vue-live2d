@@ -25,7 +25,6 @@
   "private": false,
   "dependencies": {
     "core-js": "^3.6.5",
-    "font-awesome": "^4.7.0",
     "vue": "^2.6.11"
   },
   "devDependencies": {
