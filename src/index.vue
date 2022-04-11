@@ -7,7 +7,7 @@
     @mouseout="toolShow = false">
     <div v-show="mainShow">
       <div class="vue-live2d-tip" v-html="tipText" v-show="tipShow"></div>
-      <canvas :id="live2dMainId" ref="vue-live2d-main" :width="live2dWidth" :height="live2dHeight" class="vue-live2d-main"></canvas>
+      <canvas :id="customId" :width="live2dWidth" :height="live2dHeight" class="vue-live2d-main"></canvas>
       <div
         class="vue-live2d-tool"
         ref="vue-live2d-tool"
@@ -47,7 +47,7 @@ export default {
       type: String
     },
     customId: {
-      default: '',
+      default: 'vue-live2d-main',
       type: String
     },
     apiPath: {
@@ -83,9 +83,9 @@ export default {
     return {
       messageTimer: null,
       mainShow: true,
-      tipText: '',
       tipShow: false,
       toolShow: false,
+      tipText: '',
       modelId: 1,
       modelTexturesId: 53,
       tools: [{
@@ -119,12 +119,6 @@ export default {
     })
   },
   computed: {
-    live2dMainId () {
-      const defaultId = 'vue-live2d-main'
-      const customId = this.customId
-      if (!customId) return defaultId
-      return customId
-    },
     live2dWidth () {
       return this.width ? this.width : this.size
     },
@@ -134,11 +128,7 @@ export default {
   },
   watch: {
     mainShow () {
-      const containers = ['vue-live2d']
-      const refs = this.$refs
-      containers.forEach(containerName => {
-        refs[containerName].classList.toggle(`${containerName}-on-${this.direction}`)
-      })
+      this.$refs['vue-live2d'].classList.toggle(`'vue-live2d'-on-${this.direction}`)
     },
     direction () {
       this.setDirection()
@@ -150,32 +140,29 @@ export default {
       this.changeLive2dSize()
     },
     size () {
-      if (this.width || this.height) return
+      if (this.width || this.height) {
+        return
+      }
       this.changeLive2dSize()
     }
   },
   methods: {
     changeLive2dSize () {
-      const { live2dMainId, live2dWidth: width, live2dHeight: height } = this
       // 不知还有调整宽高的好方法没？
-      document.querySelector(`#${live2dMainId}`).outerHTML = `<canvas id=${live2dMainId} width="${width}" height="${height}" class="vue-live2d-main"></canvas>`
+      document.querySelector(`#${this.customId}`).outerHTML = `<canvas id=${this.customId} width="${this.live2dWidth}" height="${this.live2dHeight}" class="vue-live2d-main"></canvas>`
       this.loadModel()
     },
     setDirection () {
       const containers = ['vue-live2d', 'vue-live2d-tool', 'vue-live2d-toggle']
-      const refs = this.$refs
-      const addClassPostFix = this.direction
       const removeClassPostFix = this.direction === 'left' ? 'right' : 'left'
       containers.forEach(containerName => {
-        refs[containerName].classList.remove(`${containerName}-on-${removeClassPostFix}`)
-        refs[containerName].classList.add(`${containerName}-on-${addClassPostFix}`)
+        this.$refs[containerName].classList.remove(`${containerName}-on-${removeClassPostFix}`)
+        this.$refs[containerName].classList.add(`${containerName}-on-${this.direction}`)
       })
     },
     loadModel () {
-      const { apiPath, modelId, modelTexturesId, live2dMainId } = this
-      const url = `${apiPath}/get/?id=${modelId}-${modelTexturesId}`
-      window.loadlive2d(live2dMainId, url)
-      console.log(`Live2D 模型 ${modelId}-${modelTexturesId} 加载完成`)
+      window.loadlive2d(this.customId, `${this.apiPath}/get/?id=${this.modelId}-${this.modelTexturesId}`)
+      console.log(`Live2D 模型 ${this.modelId}-${this.modelTexturesId} 加载完成`)
     },
     loadRandModel () {
       this.http({
@@ -233,10 +220,11 @@ export default {
     },
     loadEvent () {
       for (const event in this.tips) {
-        for (const obj of this.tips[event]) {
-          const { selector, texts } = obj
+        for (const { selector, texts } of this.tips[event]) {
           const dom = selector === 'document' ? document : document.querySelector(selector)
-          if (dom == null) continue
+          if (dom == null) {
+            continue
+          }
 
           dom.addEventListener(event, () => {
             const msg = texts[Math.floor(Math.random() * texts.length)]
