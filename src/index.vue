@@ -1,18 +1,14 @@
 <template>
   <div
-    class="vue-live2d"
     ref="vue-live2d"
-    :class="`vue-live2d-on-${this.direction}`"
+    :class="['vue-live2d', `vue-live2d-on-${this.direction}`]"
     :style="{ width: `${_width}px`, height: `${_height}px` }"
     @mouseover="toolShow = true"
     @mouseout="toolShow = false">
     <div v-show="mainShow">
-      <div class="vue-live2d-tip" v-html="tipText" v-show="tipShow"></div>
+      <div v-show="tipShow" v-html="tipText" class="vue-live2d-tip"></div>
       <canvas :id="customId" :width="_width" :height="_height" class="vue-live2d-main"></canvas>
-      <div
-        class="vue-live2d-tool"
-        :class="`vue-live2d-tool-on-${this.direction}`"
-        v-show="toolShow">
+      <div v-show="toolShow" :class="['vue-live2d-tool', `vue-live2d-tool-on-${this.direction}`]">
         <span
           v-for="(tool, index) in tools"
           :key="index"
@@ -21,7 +17,7 @@
           @click="tool.click"/>
       </div>
     </div>
-    <div class="vue-live2d-toggle" :class="`vue-live2d-toggle-on-${this.direction}`" v-show="!mainShow" @click="mainShow = true">
+    <div v-show="!mainShow" @click="mainShow = true" :class="['vue-live2d-toggle', `vue-live2d-toggle-on-${this.direction}`]">
       <span>看板娘</span>
     </div>
   </div>
@@ -142,7 +138,7 @@ export default {
   },
   methods: {
     changeLive2dSize () {
-      // 不知还有调整宽高的好方法没？
+      // 针对当前这份 live2d.min.js 来说，更改宽高就是这样。更好的方案是调用重绘方法，但是需要改 lib 源码。
       document.querySelector(`#${this.customId}`).outerHTML = `<canvas id=${this.customId} width="${this._width}" height="${this._height}" class="vue-live2d-main"></canvas>`
       this.loadModel()
     },
