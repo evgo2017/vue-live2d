@@ -11,7 +11,15 @@
     }"
     @mouseover="openLive2dTool"
     @mouseout="closeLive2dTool">
-    <div v-show="tipShow" v-html="tipText" class="vue-live2d-tip"></div>
+    <div
+      v-show="tipShow"
+      v-html="tipText"
+      :class="{
+        'vue-live2d-tip': true,
+        'vue-live2d-tip-on-top': tipPosition === 'top',
+        'vue-live2d-tip-on-bottom': tipPosition === 'bottom',
+      }">
+    </div>
     <canvas
       :id="customId"
       v-show="mainShow"
@@ -56,6 +64,13 @@ export default {
       default: 'right',
       validator: function (value) {
         return new Set(['left', 'right']).has(value)
+      },
+      type: String
+    },
+    tipPosition: {
+      default: 'top',
+      validator: function (value) {
+        return new Set(['top', 'top']).has(value)
       },
       type: String
     },
@@ -293,7 +308,6 @@ export default {
   box-sizing: border-box;
   position: absolute;
   width: 100%;
-  top: 0;
   line-height: 1.5rem;
   padding: 15px 20px;
   font-size: .9rem;
@@ -306,16 +320,22 @@ export default {
   box-shadow: 0 3px 15px 2px rgba(191, 158, 118, 0.2);
   animation: shake 50s ease-in-out 5s infinite;
 }
+.vue-live2d-tip-on-top {
+  top: 0;
+}
+.vue-live2d-tip-on-bottom {
+  bottom: 0;
+}
 /* live2d-main */
 .vue-live2d-main {
-  transition: transform .3s ease-in-out;
+  transition: padding .3s ease-in-out;
   cursor: grab;
 }
 .vue-live2d-main-on-left:hover {
-  transform: translateX(21px);
+  padding-left: 21px;
 }
 .vue-live2d-main-on-right:hover {
-  transform: translateX(-21px);
+  padding-right: 21px;
 }
 /* live2d-tool */
 .vue-live2d-tool {
@@ -325,6 +345,7 @@ export default {
   color: #5b6c7d;
   text-align: center;
   cursor: pointer;
+  padding: 0 10px;
 }
 .vue-live2d-tool span {
   line-height: 30px;
