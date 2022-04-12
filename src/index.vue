@@ -1,23 +1,44 @@
 <template>
   <div
-    ref="vue-live2d"
-    :class="['vue-live2d', `vue-live2d-on-${this.direction}`]"
-    :style="{ width: `${_width}px`, height: `${_height}px` }"
-    @mouseover="toolShow = true"
-    @mouseout="toolShow = false">
-    <div v-show="mainShow">
-      <div v-show="tipShow" v-html="tipText" class="vue-live2d-tip"></div>
-      <canvas :id="customId" :width="_width" :height="_height" class="vue-live2d-main"></canvas>
-      <div v-show="toolShow" :class="['vue-live2d-tool', `vue-live2d-tool-on-${this.direction}`]">
-        <span
-          v-for="(tool, index) in tools"
-          :key="index"
-          :class="tool.className"
-          v-html="tool.svg"
-          @click="tool.click"/>
-      </div>
+    :class="{
+      'vue-live2d': true,
+      'vue-live2d-on-left': direction === 'left',
+      'vue-live2d-on-right': direction === 'right',
+    }"
+    :style="{
+      width: `${live2dWidth}px`,
+      height: `${live2dHeight}px`,
+    }"
+    @mouseover="openLive2dTool"
+    @mouseout="closeLive2dTool">
+    <div v-show="tipShow" v-html="tipText" class="vue-live2d-tip"></div>
+    <canvas
+      :id="customId"
+      v-show="mainShow"
+      :class="{
+        'vue-live2d-main': true,
+        'vue-live2d-main-on-left': direction === 'left',
+        'vue-live2d-main-on-right': direction === 'right',
+      }"
+      :width="live2dWidth"
+      :height="live2dHeight">
+    </canvas>
+    <div v-show="toolShow" class="vue-live2d-tool">
+      <span
+        v-for="(tool, index) in tools"
+        :key="index"
+        :class="tool.className"
+        v-html="tool.svg"
+        @click="tool.click"/>
     </div>
-    <div v-show="!mainShow" @click="mainShow = true" :class="['vue-live2d-toggle', `vue-live2d-toggle-on-${this.direction}`]">
+    <div
+      v-show="toggleShow"
+      @click="openLive2dMain"
+      :class="{
+        'vue-live2d-toggle': true,
+        'vue-live2d-toggle-on-left': direction === 'left',
+        'vue-live2d-toggle-on-right': direction === 'right',
+      }">
       <span>看板娘</span>
     </div>
   </div>
@@ -33,6 +54,9 @@ export default {
   props: {
     direction: {
       default: 'right',
+      validator: function (value) {
+        return new Set(['left', 'right']).has(value)
+      },
       type: String
     },
     customId: {
@@ -71,10 +95,13 @@ export default {
   data () {
     return {
       messageTimer: null,
-      mainShow: true,
-      tipShow: false,
-      toolShow: false,
-      tipText: '',
+      containerDisplay: {
+        tip: false,
+        main: true,
+        tool: false,
+        toggle: false
+      },
+      tipText: 'vue-live2d 看板娘',
       modelId: 1,
       modelTexturesId: 53,
       tools: [{
@@ -100,7 +127,7 @@ export default {
       }, {
         className: 'fa-times',
         svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 432 592" fill="currentColor"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"/></svg>',
-        click: this.close
+        click: this.closeLive2dMain
       }]
     }
   },
@@ -112,17 +139,26 @@ export default {
     })
   },
   computed: {
-    _width () {
+    live2dWidth () {
       return this.width ? this.width : this.size
     },
-    _height () {
+    live2dHeight () {
       return this.height ? this.height : this.size
+    },
+    tipShow () {
+      return this.mainShow && this.containerDisplay.tip
+    },
+    mainShow () {
+      return this.containerDisplay.main
+    },
+    toolShow () {
+      return this.mainShow && this.containerDisplay.tool
+    },
+    toggleShow () {
+      return !this.mainShow
     }
   },
   watch: {
-    mainShow () {
-      this.$refs['vue-live2d'].classList.toggle(`vue-live2d-on-${this.direction}`)
-    },
     width () {
       this.changeLive2dSize()
     },
@@ -130,16 +166,13 @@ export default {
       this.changeLive2dSize()
     },
     size () {
-      if (this.width || this.height) {
-        return
-      }
       this.changeLive2dSize()
     }
   },
   methods: {
     changeLive2dSize () {
       // 针对当前这份 live2d.min.js 来说，更改宽高就是这样。更好的方案是调用重绘方法，但是需要改 lib 源码。
-      document.querySelector(`#${this.customId}`).outerHTML = `<canvas id=${this.customId} width="${this._width}" height="${this._height}" class="vue-live2d-main"></canvas>`
+      document.querySelector(`#${this.customId}`).outerHTML = `<canvas id=${this.customId} width="${this.live2dWidth}" height="${this.live2dHeight}" class="vue-live2d-main"></canvas>`
       this.loadModel()
     },
     loadModel () {
@@ -173,11 +206,11 @@ export default {
         clearTimeout(this.messageTimer)
         this.messageTimer = null
       } else {
-        this.tipShow = true
+        this.containerDisplay.tip = true
       }
       this.tipText = msg
       this.messageTimer = setTimeout(() => {
-        this.tipShow = false
+        this.containerDisplay.tip = false
         this.messageTimer = null
       }, timeout)
     },
@@ -197,8 +230,17 @@ export default {
     openHomePage () {
       open(this.homePage)
     },
-    close () {
-      this.mainShow = false
+    closeLive2dMain () {
+      this.containerDisplay.main = false
+    },
+    openLive2dMain () {
+      this.containerDisplay.main = true
+    },
+    closeLive2dTool () {
+      this.containerDisplay.tool = false
+    },
+    openLive2dTool () {
+      this.containerDisplay.tool = true
     },
     loadEvent () {
       for (const event in this.tips) {
@@ -236,24 +278,26 @@ export default {
 <style scoped>
 /* live2d */
 .vue-live2d {
-  transform: translateY(0);
-  transition: transform .3s ease-in-out;
+  display: flex;
+  position: relative;
+  align-items: flex-end;
 }
-.vue-live2d-on-left:hover {
-  transform: translateX(21px);
+.vue-live2d-on-left {
+  flex-direction: row;
 }
-.vue-live2d-on-right:hover {
-  transform: translateX(-21px);
+.vue-live2d-on-right {
+  flex-direction: row-reverse;
 }
 /* live2d-tip */
 .vue-live2d-tip {
+  box-sizing: border-box;
   position: absolute;
   width: 100%;
-  min-height: 3rem;
+  top: 0;
   line-height: 1.5rem;
-  margin-top: -20px;
-  padding: 5px 10px;
+  padding: 15px 20px;
   font-size: .9rem;
+
   word-break: break-all;
   text-overflow: ellipsis;
   border: 1px solid rgba(224, 186, 140, 0.62);
@@ -264,7 +308,14 @@ export default {
 }
 /* live2d-main */
 .vue-live2d-main {
+  transition: transform .3s ease-in-out;
   cursor: grab;
+}
+.vue-live2d-main-on-left:hover {
+  transform: translateX(21px);
+}
+.vue-live2d-main-on-right:hover {
+  transform: translateX(-21px);
 }
 /* live2d-tool */
 .vue-live2d-tool {
@@ -275,14 +326,7 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-.vue-live2d-tool-on-left {
-  left: -18px;
-}
-.vue-live2d-tool-on-right {
-  right: -18px;
-}
 .vue-live2d-tool span {
-  display: block;
   line-height: 30px;
 }
 .vue-live2d-tool span:hover {
@@ -291,7 +335,6 @@ export default {
 /* live2d-toggle */
 .vue-live2d-toggle {
   width: 1.5rem;
-  position: absolute;
   bottom: 1rem;
   padding: .3rem 0;
   writing-mode: vertical-lr;
@@ -299,17 +342,16 @@ export default {
   background-color: #fa0;
   font-size: 1rem;
   cursor: pointer;
-}
-.vue-live2d-toggle-on-left {
-  left: 0;
-  border-radius: 0 .5rem .5rem 0;
-}
-.vue-live2d-toggle-on-right {
   right: 0;
-  border-radius: .5rem 0 0 .5rem;
 }
 .vue-live2d-toggle:hover {
   width: 1.7rem;
+}
+.vue-live2d-toggle-on-left {
+  border-radius:  0 .5rem .5rem 0;
+}
+.vue-live2d-toggle-on-right {
+  border-radius:  .5rem 0 0 .5rem;
 }
 @keyframes shake {
   2% {
