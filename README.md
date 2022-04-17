@@ -10,7 +10,7 @@ vue 看板娘
 
 ## 一、使用
 
-### 1. 在线浏览
+### 1. 在线浏览效果
 
 #### 个人网站应用
 
@@ -26,7 +26,7 @@ https://evgo2017.github.io/vue-live2d/page/index.html
 
 ### 2. 项目引入
 
-```
+```shell
 npm install vue-live2d
 
 // 在组件中引入
@@ -34,15 +34,16 @@ import vueLive2d from 'vue-live2d'
 
 // 组件中的使用方法具体参考 `example/App.vue` 文件
 ```
+
 ### 3. 本地浏览
 
 其中包含源码，`example/App.vue` 为使用示例。
 
-```
-$ git clone https://github.com/evgo2017/vue-live2d.git
-$ cd ./vue-live2d
-$ npm install
-$ npm run serve
+```shell
+git clone https://github.com/evgo2017/vue-live2d.git
+cd ./vue-live2d
+npm install
+npm run serve
 ```
 
 ## 二、配置参数
@@ -56,7 +57,8 @@ $ npm run serve
 | height    | 模型高度                       | Number | 0                                      |
 | apiPath   | 更换模型的请求地址             | String | https://live2d.fghrsh.net/api          |
 | model     | 默认显示的模型，[编码，衣服号] | Array  | [1, 53]                                |
-| direction | 模型方位（左或者右）           | String | left（其他字符串均表示 right）         |
+| direction | 模型方位（left 或者 right） | String | left（其他字符串均表示 right）         |
+| tipPosition | 提示框位置（top 或者 bottom） | String | top |
 | tips      | 在触发某些事件时模型说出的话   | Object | 格式查看 /src/src/tips.js         |
 | homePage  | 可打开某页面的地址             | String | https://github.com/evgo2017/vue-live2d |
 | customId  | 自定义 id                      | String | vue-live2d-main                        |
@@ -87,6 +89,12 @@ $ npm run serve
 
 当为 left 时，工具栏会置于左侧，同时鼠标经过模型时，模型会整体向右移动。right 反之。
 
+#### tipPosition
+
+提示框位置，仅支持上（top）或者下（bottom）。
+
+当为 top 时，提示框会显示在模型区域上方。当为 right 时，提示框会显示在模型区域下方。
+
 #### tips
 
 在页面上触发某些事件时，模型会说出的话。
@@ -105,9 +113,11 @@ $ npm run serve
 
 ## 三、核心库
 
-现版本是参考资料中的项目进行修改的，改动较大，核心为 `live2d.min.js` ，暂不知作者是谁。
+核心库 `live2d.min.js` 的文件内容，是 Live2D 官网发布的 Live2D_SDK_WEBGL_2.1 SDK 中的`live2d.min.js` + `Live2DFramework.js` + `sampleApp1` ，以及该库作者代码。库已梳理明白，但库作者未知。
 
-也有查看 live2d 官网的 [Web SDK](https://www.live2d.com/download/cubism-sdk/download-web/) （4-r.1），综合考虑后目前采用此 js。
+在梳理核心库代码的过程中，我整理了一份从 Framework 到 App 的代码，加载来看没有什么大问题，但剩余工作量仍然较大。
+
+> 从库代码层次来看：core -> framework -> app -> vue-live2d（看板娘）。vue-live2d 目前属于定制内容。
 
 ## 四、参考资料
 
