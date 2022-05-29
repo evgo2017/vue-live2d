@@ -79,11 +79,12 @@ export default {
       type: String
     },
     apiPath: {
-      default: 'https://live2d.fghrsh.net/api',
+      // 注意：这是我服务器目前部署的 api 服务，若更新服务地址会在 README.md 说明
+      default: 'https://evgo2017.com/api/live2d-static-api/indexes',
       type: String
     },
     model: {
-      default: () => [1, 53],
+      default: () => ['Potion-Maker/Pio', 'school-2017-costume-yellow'],
       type: Array
     },
     homePage: {
@@ -117,8 +118,8 @@ export default {
         toggle: false
       },
       tipText: 'vue-live2d 看板娘',
-      modelId: 1,
-      modelTexturesId: 53,
+      modelPath: '',
+      modelTexturesId: '',
       tools: [{
         className: 'fa-comment',
         svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"/></svg>',
@@ -147,7 +148,7 @@ export default {
     }
   },
   mounted () {
-    [this.modelId, this.modelTexturesId] = this.model
+    [this.modelPath, this.modelTexturesId] = this.model
     this.loadModel()
     this.$nextTick(() => {
       this.loadEvent()
@@ -191,24 +192,27 @@ export default {
       this.loadModel()
     },
     loadModel () {
-      window.loadlive2d(this.customId, `${this.apiPath}/get/?id=${this.modelId}-${this.modelTexturesId}`)
-      console.log(`Live2D 模型 ${this.modelId}-${this.modelTexturesId} 加载完成`)
+      window.loadlive2d(this.customId, `${this.apiPath}/${this.modelPath}/${this.modelTexturesId}.json`)
+      console.log(`Live2D 模型 ${this.modelPath}，服装 ${this.modelTexturesId} 加载完成`)
     },
     loadRandModel () {
       this.http({
-        url: `${this.apiPath}/rand/?id=${this.modelId}`,
-        success: ({ model: { id, message } }) => {
-          this.modelId = id
-          this.showMessage(message, 4000)
+        url: `${this.apiPath}/models.json`,
+        success: (data) => {
+          const models = data.filter(({ modelPath }) => modelPath !== this.modelPath)
+          const { modelPath, modelIntroduce } = models[Math.floor(Math.random() * models.length)]
+          this.modelPath = modelPath
+          this.showMessage(`${modelIntroduce}`, 4000)
           this.loadRandTextures(true)
         }
       })
     },
     loadRandTextures (isAfterRandModel = false) {
       this.http({
-        url: `${this.apiPath}/rand_textures/?id=${this.modelId}-${this.modelTexturesId}`,
-        success: ({ textures: { id } }) => {
-          this.modelTexturesId = id
+        url: `${this.apiPath}/${this.modelPath}/textures.json`,
+        success: (data) => {
+          const modelTexturesIds = data.filter(modelTexturesId => modelTexturesId !== this.modelTexturesId)
+          this.modelTexturesId = modelTexturesIds[Math.floor(Math.random() * modelTexturesIds.length)]
           this.loadModel()
           if (!isAfterRandModel) {
             this.showMessage('我的新衣服好看嘛？', 4000)

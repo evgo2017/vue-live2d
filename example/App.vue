@@ -31,7 +31,7 @@
     ></live2d> -->
     <live2d
       :style="style"
-      :model="[1, 53]"
+      :model="['Potion-Maker/Pio', 'school-2017-costume-yellow']"
       :direction="direction"
       :size="size"
     ></live2d>

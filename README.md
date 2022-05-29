@@ -50,13 +50,17 @@ npm run serve
 
 ### 1. 参数说明
 
+> 注意 apiPath 是我服务器的地址，提供模型和服装支持，若更新服务地址会在 README.md 说明。
+>
+> 同时此 api 服务是我的 [ive2d-static-api](https://github.com/evgo2017/live2d-static-api) 项目，liv2d 静态 API。欢迎使用和 star。 
+
 | 配置项    | 含义                           | 类型   | 默认                                   |
 | --------- | ------------------------------ | ------ | -------------------------------------- |
 | size      | 模型宽度和高度                 | Number | 255                                    |
 | width     | 模型宽度                       | Number | 0                                      |
 | height    | 模型高度                       | Number | 0                                      |
-| apiPath   | 更换模型的请求地址             | String | https://live2d.fghrsh.net/api          |
-| model     | 默认显示的模型，[编码，衣服号] | Array  | [1, 53]                                |
+| apiPath   | 更换模型的请求地址             | String | https://evgo2017.com/api/live2d-static-api/indexes         |
+| model     | 默认显示的模型，[模型号，服装号] | Array  | ['Potion-Maker/Pio', 'school-2017-costume-yello'] |
 | direction | 模型方位（left 或者 right） | String | left（其他字符串均表示 right）         |
 | tipPosition | 提示框位置（top 或者 bottom） | String | top |
 | tips      | 在触发某些事件时模型说出的话   | Object | 格式查看 /src/src/tips.js         |
