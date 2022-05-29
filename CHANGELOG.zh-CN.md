@@ -1,8 +1,14 @@
 # 更新日志
 
+## 1.3.1
+
+`2021.05.29`version: v1.3.1
+
+* 修复：右侧 svg 图标在某些环境下缺失，和 fa-* 类名和 svg css 等有关
+
 ## 1.3.0
 
-`2021.05.29`version: v1.2.5
+`2021.05.29`version: v1.3.0
 
 * 重构：原先使用的 api 服务因一些不可抗力不能加载数据，所以**更换内部默认的 apiPath 服务与接口**，使用 [`live2d-static-api`](https://github.com/evgo2017/live2d-static-api)
 
