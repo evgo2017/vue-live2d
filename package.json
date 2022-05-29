@@ -23,6 +23,12 @@
     "vue-live2d"
   ],
   "private": false,
+  "files": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "src"
+  ],
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
