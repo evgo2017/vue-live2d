@@ -53,7 +53,11 @@
 </template>
 
 <script>
-import './lib/live2d.min.js'
+import Live2dLibURL from "./lib/live2d.min.js?url"
+async function loadLive2dLib() {
+  // 通过url动态导入，防止vite将live2d.min.js再次压缩，因为未知的原因，这会导致live2d.min.js的代码不能正常执行
+  await import(Live2dLibURL);
+}
 
 import tips from './options/tips'
 import axios from 'axios'
@@ -148,7 +152,8 @@ export default {
       }]
     }
   },
-  mounted () {
+  async mounted() {
+    await loadLive2dLib();
     [this.modelPath, this.modelTexturesId] = this.model
     this.loadModel()
     this.$nextTick(() => {
