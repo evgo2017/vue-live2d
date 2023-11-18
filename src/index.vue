@@ -56,6 +56,7 @@
 import './lib/live2d.min.js'
 
 import tips from './options/tips'
+import axios from 'axios'
 
 export default {
   name: 'vue-live2d',
@@ -276,19 +277,9 @@ export default {
         }
       }
     },
-    http ({ url, success }) {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if ((xhr.status >= 200 || xhr.status < 300) || xhr.status === 304) {
-            success && success(JSON.parse(xhr.response))
-          } else {
-            console.error(xhr)
-          }
-        }
-      }
-      xhr.open('GET', url)
-      xhr.send(null)
+    async http({ url, success }) {
+      const { data } = await axios.get(url);
+      success && success(data);
     }
   }
 }
