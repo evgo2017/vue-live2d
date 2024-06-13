@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import './lib/live2d.min.js'
+// import './lib/live2d.min.js' // [fix: [Github-22]不能被vite构建的问题](https://github.com/evgo2017/vue-live2d/pull/22)
+import Live2dLibURL from "./lib/live2d.min.js?url"
 
 import tips from './options/tips'
 
@@ -148,6 +149,7 @@ export default {
     }
   },
   mounted () {
+    await import(Live2dLibURL);
     [this.modelPath, this.modelTexturesId] = this.model
     this.loadModel()
     this.$nextTick(() => {
