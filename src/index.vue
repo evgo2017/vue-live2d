@@ -88,6 +88,18 @@ export default {
       // default: 'https://raw.githubusercontent.com/evgo2017/live2d-static-api/main/indexes',
       type: String
     },
+    // [feat: [Github-13] 扩展一言接口](https://github.com/evgo2017/vue-live2d/pull/13/commits/a9dde4c9bed2704e99ec1c3c46c6beb04fb91abf#diff-7ed40920a12c7a58a6ceb3904269d8f0132a13b17e8fd4d553bccf576266fd54R311)
+    speechApi: {
+      default: 'https://v1.hitokoto.cn',
+      type: String
+    },
+    speechContentFormat: {
+      default: (res) => {
+        const { hitokoto, id, creator, from } = res
+        return `${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${from} 》`
+      },
+      type: Function
+    },
     model: {
       default: () => ['Potion-Maker/Pio', 'school-2017-costume-yellow'],
       type: Array
@@ -246,9 +258,9 @@ export default {
     },
     showHitokoto () {
       this.http({
-        url: 'https://v1.hitokoto.cn',
-        success: ({ hitokoto, id, creator, from }) => {
-          this.showMessage(`${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${from} 》`)
+        url: this.speechApi,
+        success: (res) => {
+          this.showMessage(this.speechContentFormat(res))
         }
       })
     },

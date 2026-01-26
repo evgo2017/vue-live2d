@@ -41,6 +41,8 @@ export default {
 | [direction](#其它参数说明) | 模型停靠方位 (`left` / `right`) | String | `right` |
 | [tipPosition](#其它参数说明) | 提示框位置 (`top` / `bottom`) | String | `top` |
 | [tips](#其它参数说明) | 自定义交互提示语配置 | Object | 详见 `/src/options/tips.js` |
+| [**speechApi**](#💬-语音对话-speech) | **语音接口**，点击对话图标时请求的 API 地址 | String | `https://v1.hitokoto.cn` |
+| [**speechContentFormat**](#💬-语音对话-speech) | **内容格式化函数**，解析 API 返回的数据 | Function | 接收 API 返回的原始数据对象，并返回一个字符串 |
 | homePage | 点击主页链接跳转的地址 | String | 本项目主页地址 |
 | [customId](#其它参数说明) | 同一页面加载多个模型时的识别 ID | String | `vue-live2d-main` |
 
@@ -66,6 +68,16 @@ export default {
 - **model**：切换模型或换装时，控制台会输出相关编码信息，直接复制即可。
 - **宽高控制**：`width` 和 `height` 的优先级高于 `size`。建议使用 `size` 统一缩放，以减少模型重新加载的次数。
 - **多模型同屏**：通过 `customId` 可以在同一页面渲染多个组件。但受限于核心库逻辑，同一时间通常只有一个模型支持动态交互。
+
+- 💬 **语音对话 (Speech)**：你可以通过自定义接口和格式化函数，让看板接入任何内容源（如：诗词、名言、甚至 AI 回复）：
+
+```js
+<!-- 自定义用法 -->
+<vue-live2d 
+  speechApi="https://api.xxx.com/api" 
+  :speechContentFormat="(content) => `自定义解析和返回内容 ${content}`" 
+/>
+```
 
 ---
 
