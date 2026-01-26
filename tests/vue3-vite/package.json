@@ -1,0 +1,18 @@
+{
+    "name": "vue3-vite-test",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "vue": "^3.3.4",
+        "vue-live2d": "file:../vue-live2d-test.tgz"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.2.3",
+        "vite": "^7.3.1"
+    }
+}

@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-/dist
+**/dist
 /page
 
 # local env files
@@ -20,3 +20,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+tests/*.tgz
