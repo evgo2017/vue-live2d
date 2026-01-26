@@ -83,7 +83,7 @@ export default {
     },
     apiPath: {
       // default: '../live2d-static-api@1.0.1/indexes ',
-      default: 'https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.1/indexes',
+      default: 'https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.5/indexes',
       // default: 'https://unpkg.com/live2d-static-api@1.0.1/indexes',
       // default: 'https://raw.githubusercontent.com/evgo2017/live2d-static-api/main/indexes',
       type: String
