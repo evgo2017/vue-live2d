@@ -53,6 +53,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
 import './lib/live2d.min.js'
 // import Live2dLibURL from './lib/live2d.min.js?url' // [fix: [Github-22]不能被vite构建的问题](https://github.com/evgo2017/vue-live2d/pull/22)
 // 用最新的 vue-cli 测试vue2和vue3项目，用 npm run vue@latest 测试vue3 项目，均会报错 Error in mounted hook，故 revert 相关修复
