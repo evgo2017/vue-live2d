@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ master ]  # 触发分支，改为你的主分支
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # 选择合适的 Node.js 版本
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build  # 假设你的构建命令是 npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/master'  # 只在主分支推送时部署
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist  # 构建输出目录，Vue 默认是 dist

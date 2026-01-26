@@ -41,13 +41,13 @@ import vueLive2d from 'vue-live2d' // 使用方式请参考项目中的 `example
 | 配置项    | 含义                           | 类型   | 默认值                                   |
 | --------- | ------------------------------ | ------ | -------------------------------------- |
 | [**apiPath**](#核心参数-apipath) | 请求此 API 地址加载模型数据 | String | `./live2d-static-api/indexes`        |
-| [model](#其他参数)     | 默认显示的模型，格式：[模型号，服装号] | Array  | ['Potion-Maker/Pio', 'school-2017-costume-yello'] |
-| [width/height/size](#其他参数) | 模型的宽度/高度/宽度和高度             | Number | 0/0/255                                |
-| [direction](#其他参数) | 模型的方位 | String | left/right    |
-| [tipPosition](#其他参数) | 模型的提示框位置 | String | top/bottom |
-| [tips](#其他参数)      | 触发事件时模型说出的话   | Object | 详见 /src/options/tips.js         |
+| [model](#其它参数)     | 默认显示的模型，格式：[模型号，服装号] | Array  | ['Potion-Maker/Pio', 'school-2017-costume-yello'] |
+| [width/height/size](#其它参数) | 模型的宽度/高度/宽度和高度             | Number | 0/0/255                                |
+| [direction](#其它参数) | 模型的方位 | String | left/right    |
+| [tipPosition](#其它参数) | 模型的提示框位置 | String | top/bottom |
+| [tips](#其它参数)      | 触发事件时模型说出的话   | Object | 详见 /src/options/tips.js         |
 | homePage  | 可打开某页面的地址             | String | https://github.com/evgo2017/vue-live2d |
-| [customId](#其他参数)  | 自定义模型 ID                      | String | vue-live2d-main                        |
+| [customId](#其它参数)  | 自定义模型 ID                      | String | vue-live2d-main                        |
 
 ### 核心参数 apiPath
 
