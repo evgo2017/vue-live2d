@@ -1,21 +1,21 @@
-# vue-live2d 看板
+# vue-live2d
 
 [![version](https://img.shields.io/npm/v/vue-live2d)](https://npm.js) ![license](https://img.shields.io/github/license/evgo2017/vue-live2d) [![downloads](https://img.shields.io/npm/dt/vue-live2d)](<https://www.npmjs.com/package/vue-live2d> ) [![fork](https://img.shields.io/github/forks/evgo2017/vue-live2d?style=social)](https://github.com/evgo2017/vue-live2d)
 
 ![logo](https://github.com/evgo2017/vue-live2d/raw/master/public/logo.png)
 
-在 vue 项目中直接引用此包，即可应用。支持 vue2 和 vue3。
+一个适用于 Vue 2 和 Vue 3 项目的 Live2D 看板娘组件。
 
-## 一、效果浏览
+## 效果预览
 
-### 1. 在线浏览
+### 在线预览
 
-| 配置项    | 含义                           |
-| --------- | ------------------------------ |
-| 个人部署      | https://vue-live2d.demo.evgo2017.com/                |
-| Github 部署     | https://evgo2017.github.io/vue-live2d/page/index.html                |
+| 类型 | 地址 |
+| ---- | ---- |
+| 个人部署 | https://vue-live2d.demo.evgo2017.com/ |
+| GitHub 部署 | https://evgo2017.github.io/vue-live2d/page/index.html |
 
-### 2. 本地浏览
+### 本地预览
 
 ```shell
 git clone https://github.com/evgo2017/vue-live2d.git
@@ -24,104 +24,69 @@ npm install
 npm run serve
 ```
 
-## 二、项目使用
+## 安装与使用
 
 ```shell
-// 1. 引入项目
+# 1. 安装包
 npm install vue-live2d
 
-// 2. 在组件中引入
-import vueLive2d from 'vue-live2d' // 在组件中的使用方式，参考项目中 `example/App.vue` 文件
+# 2. 在组件中引入
+import vueLive2d from 'vue-live2d' // 使用方式请参考项目中的 `example/App.vue` 文件
 
-// 3. 根据个人使用情况，配置 apiPath 参数，具体参考下文。
+# 3. 根据需要配置 apiPath 参数，详见下文。
 ```
 
-## 三、配置参数
+## 配置参数
 
-### 1. 参数说明
-
-| 配置项    | 含义                           | 类型   | 默认                                   |
+| 配置项    | 含义                           | 类型   | 默认值                                   |
 | --------- | ------------------------------ | ------ | -------------------------------------- |
-| **apiPath** | 更换模型的请求地址             | String | `./live2d-static-api/indexes`        |
-| size      | 模型宽度和高度                 | Number | 255                                    |
-| width     | 模型宽度                       | Number | 0                                      |
-| height    | 模型高度                       | Number | 0                                      |
-| model     | 默认显示的模型，[模型号，服装号] | Array  | ['Potion-Maker/Pio', 'school-2017-costume-yello'] |
-| direction | 模型方位（left 或者 right） | String | left（其他字符串均表示 right）         |
-| tipPosition | 提示框位置（top 或者 bottom） | String | top |
-| tips      | 在触发某些事件时模型说出的话   | Object | 格式查看 /src/src/tips.js         |
+| [**apiPath**](#核心参数-apipath) | 请求此 API 地址加载模型数据 | String | `./live2d-static-api/indexes`        |
+| [model](#其他参数)     | 默认显示的模型，格式：[模型号，服装号] | Array  | ['Potion-Maker/Pio', 'school-2017-costume-yello'] |
+| [width/height/size](#其他参数) | 模型的宽度/高度/宽度和高度             | Number | 0/0/255                                |
+| [direction](#其他参数) | 模型的方位 | String | left/right    |
+| [tipPosition](#其他参数) | 模型的提示框位置 | String | top/bottom |
+| [tips](#其他参数)      | 触发事件时模型说出的话   | Object | 详见 /src/options/tips.js         |
 | homePage  | 可打开某页面的地址             | String | https://github.com/evgo2017/vue-live2d |
-| customId  | 自定义 id                      | String | vue-live2d-main                        |
+| [customId](#其他参数)  | 自定义模型 ID                      | String | vue-live2d-main                        |
 
-### 2. 具体说明
+### 核心参数 apiPath
 
-#### apiPath
+1. **方法一**：使用 [live2d-static-api](https://github.com/evgo2017/live2d-static-api) 静态 API。将模型文件放置在项目的 `public` 目录下。参考下图：
 
-请求此 API 地址加载模型数据。API 具有两种部署方式。
+   ![apiPath](https://github.com/evgo2017/vue-live2d/raw/master/public/apiPath.png)
 
-① 部署方法一：使用 [live2d-static-api](https://github.com/evgo2017/live2d-static-api) 静态 API。将模型文件放在项目的 `public` 目录下即可。参考下图：
+2. **方法二**：使用 [live2d-static-api](https://github.com/evgo2017/live2d-static-api) 静态 API。将文件部署到其他可访问的静态地址，例如：`apiPath="https://raw.githubusercontent.com/evgo2017/live2d-static-api/refs/heads/main/indexes"`。
 
-![apiPath](https://github.com/evgo2017/vue-live2d/raw/master/public/apiPath.png)
+3. **方法三**：使用 [fghrsh/live2d_api](https://github.com/fghrsh/live2d_api) 动态 API。
 
-② 部署方法二：使用 [live2d-static-api](https://github.com/evgo2017/live2d-static-api) 静态 API。将这些文件部署到其它可访问到的静态地址，如 `apiPath="https://raw.githubusercontent.com/evgo2017/live2d-static-api/refs/heads/main/indexes"`。
-
-③ 部署方法三：使用 [fghrsh/live2d_api](https://github.com/fghrsh/live2d_api) 动态 API。
-
-> 常见错误：`Uncaught SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON`，[Issue25](https://github.com/evgo2017/vue-live2d/issues/25)。
+> **常见错误**：`Uncaught SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON`，详见 [Issue #25](https://github.com/evgo2017/vue-live2d/issues/25)。
 >
-> 错误原因：apiPath 配置错误。需要修改 apiPath 配置，参考上述内容。
+> **原因**：apiPath 配置错误。请参考上述方法调整配置。
 
-#### width height size
+### 其它参数
 
-这三个参数放在一起说，它们都是用来调整模型宽高的。width 只调整宽度，height 只调整高度，size 同时调整宽高为同一值。
+| 参数名   | 备注                                                         |
+| -------- | ------------------------------------------------------------ |
+| model    | 第一个值表示模型编码，第二个值表示该模型的皮肤号。每次切换模型或换装时，控制台会输出相关信息，便于获取喜欢的模型信息。 |
+| width/height/size | width 只调整宽度，height 只调整高度，size 调整宽高为同一值。<br />width 和 height 参数会覆盖 size 参数设置的对应值。size 是为了减少重新加载模型的次数。 |
+| direction          | 当为 left 时，工具栏会置于左侧，鼠标经过模型时，模型会整体向右移动。right 反之。 |
+| tipPosition        | 当为 top 时，提示框会显示在模型区域上方。当为 bottom 时，提示框会显示在模型区域下方。 |
+| tips               | 此参数只可初始化一次，若使用插件定义的默认值则不要绑定此参数。 |
+| customId | 此参数用于在同一页面加载多个模型。可以成功加载，但通常最初只会显示一个模型，需要手动触发其他模型，同时原本显示的模型成为静态，触发的其他模型变为动态。<br />例如，页面有 A 和 B 两个模型。A 正确显示，但 B 只有工具栏。此时手动点击 B 的切换模型或换装，B 正确显示，同时 A 成为静态，不再随鼠标移动。再次点击 A 重复操作。<br />此切换应与核心库有关，综合考虑不继续完善此功能。 |
 
-优先级：width = height > size。可以说 width 和 height 参数会覆盖 size 参数设置的对应值。
+## Star History
 
-设置 size 是为了减少重新加载模型的次数。
+[![Star History Chart](https://api.star-history.com/svg?repos=evgo2017/vue-live2d&type=date&legend=bottom-right)](https://www.star-history.com/#evgo2017/vue-live2d&type=date&legend=bottom-right)
 
-#### model
+## 核心库
 
-默认显示的模型，为数组，第一个值代表具体模型编码，第二个值代表该模型的皮肤号。
-
-插件每次切换模型或者换装时候，都会在控制台 console 这此信息，可通过此方便获得自己喜欢的模型信息。
-
-#### direction
-
-模型方位，仅支持左（left）或者右（right）。
-
-当为 left 时，工具栏会置于左侧，同时鼠标经过模型时，模型会整体向右移动。right 反之。
-
-#### tipPosition
-
-提示框位置，仅支持上（top）或者下（bottom）。
-
-当为 top 时，提示框会显示在模型区域上方。当为 right 时，提示框会显示在模型区域下方。
-
-#### tips
-
-在页面上触发某些事件时，模型会说出的话。
-
-注意：此参数只可初始化一次，若使用插件定义的默认值则不要绑定此参数。
-
-#### customId
-
-插件中只有显示模型的 canvas 必须有 id ，可自定义其 id 值。
-
-此参数是我在尝试一个页面上加载多个模型时增加，可以成功，但通常最初只会显示一个模样，需要手动触发其他模型，同时原本显示的模型成为静态，触发的其他模型变为动态。
-
-比如页面有一个 A 模型，和一个 B 模型。A 正确显示，但 B 只有工具栏等内容。此时手动点击 B 模型的切换模型或者换装，B 模型正确显示，同时 A 模型成为静态，不再随着鼠标移动而动。再次点击 A 模型重复操作同理。
-
-这部分切换应该是与核心库有关，综合考虑不继续完善此功能。
-
-## 四、核心库
-
-核心库 `live2d.min.js` 的文件内容，是 Live2D 官网发布的 Live2D_SDK_WEBGL_2.1 SDK 中的`live2d.min.js` + `Live2DFramework.js` + `sampleApp1` ，以及该库作者代码。库已梳理明白，但库作者未知。
+核心库 `live2d.min.js` 基于 Live2D 官网发布的 Live2D_SDK_WEBGL_2.1 SDK 中的 `live2d.min.js`、`Live2DFramework.js` 和 `sampleApp1`，以及库作者的代码。库已梳理，但作者未知。
 
 在梳理核心库代码的过程中，我整理了一份从 Framework 到 App 的代码，加载来看没有什么大问题，但剩余工作量仍然较大。
 
 > 从库代码层次来看：core -> framework -> app -> vue-live2d（看板娘）。vue-live2d 目前属于定制内容。
 
-## 五、参考资料
+## 参考资料
 
 [1] https://github.com/fghrsh/live2d_demo
 
