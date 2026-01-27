@@ -35,7 +35,7 @@ export default {
 
 | 配置项 | 含义 | 类型 | 默认值 |
 | :--- | :--- | :--- | :--- |
-| [**apiPath**](#核心参数-apipath) | **核心地址**，请求此 API 加载模型数据 | String | `https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.5/indexes` |
+| [**apiPath**](#核心参数-apipath) | **核心地址**，请求此 API 加载模型数据 | String | `https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.6/indexes` |
 | [model](#其它参数说明) | 默认显示的 [模型号, 服装ID] | Array | `['Potion-Maker/Pio', 'school-2017-costume-yellow']` |
 | [width/height/size](#其它参数说明) | 模型的宽度/高度/宽度和高度 | Number | `0 / 0 / 255` |
 | [direction](#其它参数说明) | 模型停靠方位 (`left` / `right`) | String | `right` |
@@ -58,8 +58,8 @@ export default {
 2. **方法二：NPM / CDN 模式（推荐，极致稳定）**
    利用 NPM 公用 CDN 加速，实现零环境依赖的静态分发：
    ```js
-   apiPath="https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.5/indexes" // 推荐 JSdelivr
-   apiPath="https://unpkg.com/live2d-static-api@1.0.5/indexes"          // 国内 Unpkg
+   apiPath="https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.6/indexes" // 推荐 JSdelivr
+   apiPath="https://unpkg.com/live2d-static-api@1.0.6/indexes"          // 国内 Unpkg
    apiPath="https://raw.githubusercontent.com/evgo2017/live2d-static-api/main/indexes" // GitHub
    ```
 
