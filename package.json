@@ -1,6 +1,6 @@
 {
   "name": "vue-live2d",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "author": "evgo <evgo2017@qq.com>",
   "description": "一个适用于 Vue 2 和 Vue 3 项目的 Live2D 看板组件",
   "license": "MIT",
