@@ -23,7 +23,7 @@
     </div>
     <!-- 可尝试一个页面上多个模型： -->
     <!-- <live2d
-      :model="[1, 53]"
+      :model="['Potion-Maker/Tia', 'default-costume']"
       :direction="direction"
       :width="width"
       :height="height"
