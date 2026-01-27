@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       direction: 'right',
-      apiPath: process.env.VUE_APP_LIVE2D_API_PATH || 'https://cdn.jsdelivr.net/npm/live2d-static-api@1.0.6/indexes',
+      apiPath: process.env.VUE_APP_LIVE2D_API_PATH || 'https://cdn.jsdelivr.net/npm/live2d-static-api@latest/indexes',
       style: '',
       width: 500,
       height: 500,
